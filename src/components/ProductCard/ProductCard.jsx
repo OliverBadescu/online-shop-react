@@ -1,4 +1,5 @@
 import React from 'react';
+import image from  '../../assets/imgs/test.jpg'
 
 export default function ProductCard({product}){
 
@@ -6,7 +7,7 @@ export default function ProductCard({product}){
 
         <>
             <div className="product-card">
-                <img src="assets/imgs/test.jpg" alt={product.name} />
+                <img src={image} alt={product.name} />
                 <p>{product.name}</p>
                 <p className="description">{product.description}</p>
                 <p>${product.price}</p>

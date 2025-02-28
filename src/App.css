@@ -136,7 +136,7 @@ body .header-container{
 }
 
 .aside-container{
-  background-image: url(/assets/imgs/aside-img.jpg);
+  background-image: url(./assets/imgs/aside-img.jpg);
   background-repeat: no-repeat;
   height: 90vh;
   background-position: 50% 75%;
@@ -477,7 +477,7 @@ input[type=email], input[type=password],input[type=number],input[type=text] {
 
 .aside-container-cart, .aside-container-shop, .aside-container-checkout{
   background: linear-gradient(rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5)), 
-  url('assets/imgs/aside-cart-img.jpg');
+  url('./assets/imgs/aside-cart-img.jpg');
   height: 50vh;
   background-repeat: no-repeat;
   width: 100%;
