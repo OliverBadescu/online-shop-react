@@ -20,10 +20,15 @@ function api(path, method = 'GET', body = null) {
       const response = await api(path, method, body);
       const data = await response.json().catch(() => null);
   
-      if (!response.ok) {
-        const errorMessage =
-          (data && data.message) || response.statusText || 'Request failed';
-        throw new Error(Error `${response.status}: ${errorMessage}`);
+      if (response.status!=200) {
+
+        const errorMessage = (data && data.message) || response.statusText || 'Request failed';
+      
+        let error=  new Error(errorMessage);
+
+        error.status=response.status;
+
+        throw error;
       }
   
       return {
@@ -32,8 +37,11 @@ function api(path, method = 'GET', body = null) {
         body: data,
       };
     } catch (error) {
+
+      
       return {
         success: false,
+        status: error.status,
         message: error.message || 'Something went wrong',
       };
     }
@@ -41,5 +49,9 @@ function api(path, method = 'GET', body = null) {
 
 
 export function login(loginRequest){
-    return request('login', 'POST', loginRequest);
+  return request('login', 'POST', loginRequest);
+}
+
+export function register(registerRequest){
+  return request('register', 'POST', registerRequest);
 }

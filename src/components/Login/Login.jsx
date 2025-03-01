@@ -1,14 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react"; 
 import { UserContext } from "../../services/state/UserContext";
-import { useNavigate } from 'react-router-dom';
-import { Alert } from 'antd'; 
+import { useNavigate, Link } from 'react-router-dom';
+import { Alert } from 'antd';
 
 export default function Login() {
     const navigate = useNavigate();
-    const { handleLogin } = useContext(UserContext);
+    const { handleLogin, errors, setErrors } = useContext(UserContext); 
     const [loginRequest, setLoginRequest] = useState({ email: "", password: "" });
-    const [errorMessage, setErrorMessage] = useState(null); 
-
+    const [fields, setFields] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -16,17 +15,48 @@ export default function Login() {
     };
 
     const handleSubmit = async () => {
-        try {
-            await handleLogin(loginRequest);
-            navigate('/home');
-        } catch (err) {
-            setErrorMessage(err.message || "Login failed"); 
 
+        if (!loginRequest.email || !loginRequest.password) {
+            setFields(true);
+            return;
+        }
+        const success = await handleLogin(loginRequest); 
+        
+        
+        if (success) {
+            navigate('/home');
         }
     };
 
+   
+    useEffect(() => {
+        return () => {
+            setErrors([]); 
+        };
+    }, [setErrors]); 
+
     return (
         <>
+            {errors.length > 0 && (
+                <Alert 
+                    className="alert-container-login"
+                    message="Error"
+                    description={errors.join(", ")}
+                    type="error"
+                    showIcon
+                    closable
+                />
+            )}  
+            {fields && (
+                <Alert 
+                    className="alert-container-login"
+                    message="Error"
+                    description={"Please fill in all fields"}
+                    type="error"
+                    showIcon
+                    closable
+                />
+            )}  
             <div className="login-page">
                 <div>
                     <div className="login-container">
@@ -45,16 +75,8 @@ export default function Login() {
                             onChange={handleInputChange}
                             placeholder="Your password"
                         />
-                        {errorMessage && (
-                            <Alert
-                                message="Error"
-                                description={errorMessage}
-                                type="error"
-                                showIcon
-                                closable
-                                onClose={() => setErrorMessage(null)} 
-                            />
-                        )}
+
+                        <p>Don't have an account? <Link to={"/register"} className="register-link">Register here</Link></p>
                         <button className="login-button" onClick={handleSubmit}>
                             Log in
                         </button>

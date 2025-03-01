@@ -1041,3 +1041,12 @@ button:disabled{
 .save-changes-button{
   display: none;
 }
+
+.alert-container-login{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-top: 20px;
+  width: 30%;
+}

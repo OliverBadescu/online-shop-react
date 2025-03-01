@@ -20,12 +20,14 @@ function api(path, method = 'GET', body = null) {
       const response = await api(path, method, body);
       const data = await response.json().catch(() => null);
   
-      if (!response.ok) {
-        const errorMessage =
-          (data && data.message) || response.statusText || 'Request failed';
-        
+      if (response.status!=200) {
+
+        const errorMessage = (data && data.message) || response.statusText || 'Request failed';
+
+        let error=  new Error(errorMessage);
+        error.status=response.status;
+        throw error;
       }
-  
       return {
         success: true,
         status: response.status,
