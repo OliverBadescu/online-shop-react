@@ -1,12 +1,30 @@
 import { useState } from 'react'
 import './App.css'
 import Home from './components/Home/Home'
+import { UserProvider } from './services/state/UserContext'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/Route/ProtectedRoute'
+import Login from './components/Login/Login'
 
 function App() {
 
   return (
     <>
-      <Home/>
+    
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route path='/' element ={<Login/>}/>
+            <Route path='/login' element ={<Login/>}/>
+            <Route path='/home' element ={ 
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+              />
+          </Routes>
+        </Router>
+      </UserProvider>
     </>
   )
 }
