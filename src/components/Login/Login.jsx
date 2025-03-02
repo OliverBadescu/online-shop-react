@@ -12,14 +12,19 @@ export default function Login() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setLoginRequest({ ...loginRequest, [name]: value });
+        setFields(false);
     };
 
     const handleSubmit = async () => {
 
-        if (!loginRequest.email || !loginRequest.password) {
+        setFields(false);
+
+        if (!loginRequest.email.trim() || !loginRequest.password.trim()) {
             setFields(true);
             return;
         }
+
+        setFields(false);
         const success = await handleLogin(loginRequest); 
         
         

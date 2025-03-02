@@ -6,31 +6,26 @@ import dining from '../../assets/imgs/dining.jpg';
 import bedroom from '../../assets/imgs/bedroom.jpg';
 import setup from '../../assets/imgs/setup.png';
 import { UserContext } from "../../services/state/UserContext";
+import { useNavigate, Link } from 'react-router-dom';
+import { ProductContext } from "../../services/state/ProductsContext";
 
-export default function ProductList() {
-    const [products, setProducts] = useState([]);
+export default function Home() {
     const [offset, setOffset] = useState(0);
     const limit = 8;
 
+    const navigate = useNavigate();
     const { user } = useContext(UserContext);
+    const { products } = useContext(ProductContext); 
 
 
-
-    useEffect(() => {
-        async function fetchProducts() {
-            try {
-                const response = await getAllProducts();
-                const allProducts = response.body.list;
-                setProducts(allProducts);
-            } catch (err) {
-                console.error(err);
-            }
-        }
-        fetchProducts();
-    }, []);
 
     const handleShowMore = () => {
         setOffset((prevOffset) => prevOffset + limit);
+    };
+
+    const handleNavigation = (event, path) => {
+        event.preventDefault();
+        navigate(path);
     };
 
     return (
@@ -39,7 +34,7 @@ export default function ProductList() {
                 <h1>Furniro</h1>
                 <div className="navigation-container">
                     <a href="#"><p>Home</p></a>
-                    <a href="#" className="shop-link"><p>Shop</p></a>
+                    <Link to={'/shop'} className="shop-link"><p>Shop</p></Link>
                     <a href="#"><p>About</p></a>
                     <a href="#"><p>Contact</p></a>
                 </div>
@@ -55,7 +50,7 @@ export default function ProductList() {
                     <p className="line-space">New Arrival</p>
                     <h2>Discover Our <br /> New Collection</h2>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, obcaecati.</p>
-                    <button className="buy-now-btn">BUY NOW</button>
+                    <button className="buy-now-btn" onClick={(e) => handleNavigation(e, '/shop')}>BUY NOW</button>
                 </div>
             </div>
 
