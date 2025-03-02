@@ -8,15 +8,18 @@ export function ProductProvider({ children }){
 
 
     const [products, setProducts] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
 
     const handleFetchProducts = async () => {
+
+        setLoading(false);
 
         try {
             const response = await getAllProducts();
             const allProducts = response.body.list;
             setProducts(allProducts);
+            setLoading(false);
         } catch (err) {
             console.error(err);
         }

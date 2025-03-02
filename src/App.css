@@ -1049,4 +1049,5 @@ button:disabled{
   margin: auto;
   margin-top: 20px;
   width: 30%;
+  z-index: 100;
 }

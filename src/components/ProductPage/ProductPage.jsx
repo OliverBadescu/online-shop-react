@@ -1,27 +1,67 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { ProductCardContext } from '../../services/state/productCardContext';
 import { useContext } from 'react';
 import test from '../../assets/imgs/test.jpg';
+import { addProductToCart } from '../../services/api/cartService';
+import { UserContext } from '../../services/state/UserContext';
+import { Alert } from 'antd';
 
 export default function ProductPage(){
 
 
-
+    const { user } = useContext(UserContext);
     const { product } = useContext(ProductCardContext); 
+    const [error, setError] = useState(true);
+    const [quantity, setQuantity] = useState(1);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setQuantity({ ...quantity, [name]: value });
+    };
+
+
+    const handleAddToCart = async () => {
+
+        setError(true);
+
+        const cartRequest = {
+            productId: product.id,
+            quantity: quantity
+        }
+
+        let data = await addProductToCart(user.id, cartRequest);
+
+        if(data){
+            setError(false);
+        }else{
+            setError(true);
+        }
+
+
+    }
 
 
     return(
         <>
+
+            {!error && (
+                <Alert
+                    className="alert-container-login"
+                    message="Success"
+                    description={"Product added to cart succesfully"}
+                    type="success"
+                    showIcon
+                    closable
+                />
+            )}
             <div className="header-container">
                 <h1>Furniro</h1>
                 <div className="navigation-container">
-                <a href="#" className="home-link">
+                <Link to={'/home'} className="home-link">
                     <p>Home</p>
-                </a>
-                <a href="#" className="shop-link">
-                    <p>Shop</p>
-                </a>
+                </Link>
+                <Link to={'/shop'} className="shop-link"><p>Shop</p></Link>
                 <a href="#">
                     <p>About</p>
                 </a>
@@ -85,11 +125,12 @@ export default function ProductPage(){
                     type="number"
                     name="quantity"
                     id="quantity-product-page"
+                    onChange={handleInputChange}
                     defaultValue={1}
                     min={1}
                     max={99}
                     />
-                    <button className="add-to-cart-product-page-button">Add To Cart</button>
+                    <button className="add-to-cart-product-page-button" onClick={handleAddToCart}>Add To Cart</button>
                 </div>
                 <hr className="hr-product-page" />
                 <div className="product-category">

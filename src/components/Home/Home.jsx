@@ -14,7 +14,7 @@ export default function Home() {
     const limit = 8;
 
     
-    const { user } = useContext(UserContext);
+    
     const { products } = useContext(ProductContext); 
 
 
@@ -42,7 +42,7 @@ export default function Home() {
                 <div className="navigation-container-icons">
                     <a href="#" className="user-icon"><i className="fa-regular fa-user"></i></a>
                     <a href="#"><i className="fa-regular fa-heart"></i></a>
-                    <a href="#" className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></a>
+                    <Link to={'/cart'} className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></Link>
                 </div>
             </div>
 

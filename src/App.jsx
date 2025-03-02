@@ -10,6 +10,7 @@ import Register from './components/Register/Register';
 import Shop from './components/Shop/Shop';
 import ProductPage from './components/ProductPage/ProductPage'
 import ProductCardProvider from './services/state/productCardContext'
+import Cart from './components/Cart/Cart'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path='/login' element ={<Login/>}/>
                 <Route path='/register' element ={<Register/>}/>
                 <Route path='/product-page' element ={<ProductPage/>}/>
+                <Route path='/cart' element ={<Cart/>}/>
                 <Route path='/shop' element ={<Shop/>}/>
                 <Route path='/home' element ={ 
                     <ProtectedRoute>
