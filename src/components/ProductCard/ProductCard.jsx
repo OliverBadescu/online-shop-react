@@ -1,7 +1,27 @@
 import React from 'react';
 import image from  '../../assets/imgs/test.jpg'
+import { useNavigate } from 'react-router-dom';
+import { ProductCardContext } from '../../services/state/productCardContext';
+import { useContext } from 'react';
 
 export default function ProductCard({product}){
+
+
+    const { handleProductClick } = useContext(ProductCardContext); 
+
+    const navigate = useNavigate();
+    const handleNavigation = (event, path) => {
+        event.preventDefault();
+        navigate(path);
+    };
+
+    const handleCartClick = () => {
+
+
+        handleProductClick(product);
+        navigate('/product-page');
+
+    }
 
     return (
 
@@ -11,7 +31,7 @@ export default function ProductCard({product}){
                 <p>{product.name}</p>
                 <p className="description">{product.description}</p>
                 <p>${product.price}</p>
-                <button className="add-to-cart" data-id={product.id}>Add to cart</button>
+                <button className="add-to-cart" data-id={product.id} onClick={handleCartClick}>Add to cart</button>
             </div>
         </>
     );

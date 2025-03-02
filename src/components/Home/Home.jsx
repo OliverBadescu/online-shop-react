@@ -13,7 +13,7 @@ export default function Home() {
     const [offset, setOffset] = useState(0);
     const limit = 8;
 
-    const navigate = useNavigate();
+    
     const { user } = useContext(UserContext);
     const { products } = useContext(ProductContext); 
 
@@ -23,6 +23,7 @@ export default function Home() {
         setOffset((prevOffset) => prevOffset + limit);
     };
 
+    const navigate = useNavigate();
     const handleNavigation = (event, path) => {
         event.preventDefault();
         navigate(path);

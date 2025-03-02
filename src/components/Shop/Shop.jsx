@@ -72,9 +72,9 @@ export default function Shop(){
             <div className="products-container-shop">
                 <div className="card-section">
 
-                {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
+                    {products.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
                 </div>
                 <div className="pages-section">
                 <button className="page-btn active">1</button>

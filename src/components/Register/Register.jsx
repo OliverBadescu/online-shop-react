@@ -22,15 +22,18 @@ export default function Register() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setRequest({ ...request, [name]: value });
+        setFields(false);
     };
 
     const handleSubmit = async () => {
+        setFields(false);
         if (!request.fullName || !request.email || !request.password || !request.phone || !request.country || !request.billingAddress || !request.shippingAddress) {
             setFields(true);
             return;
         }
 
         const success = await handleRegister(request);
+        setFields(false);
         if (success) {
             setRegistered(true);
             setTimeout(() => navigate('/login'), 2000); 
