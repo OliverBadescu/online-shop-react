@@ -15,7 +15,11 @@ export default function CartProductCard({ product, onDelete, onQuantityUpdate })
             return;
         }
 
-        const data = await updateCartQuantity(user.id, product.productId, newQuantity);
+        const request = {
+            quantity: newQuantity
+        }
+
+        const data = await updateCartQuantity(user.id, product.productId, request);
 
         if (data.success) {
             setQuantity(newQuantity);

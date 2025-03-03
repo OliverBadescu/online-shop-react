@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import ProductCard from "../ProductCard/ProductCard";
-import { getAllProducts } from "../../services/api/productsService";
 import living from '../../assets/imgs/living.jpg';
 import dining from '../../assets/imgs/dining.jpg';
 import bedroom from '../../assets/imgs/bedroom.jpg';
 import setup from '../../assets/imgs/setup.png';
-import { UserContext } from "../../services/state/UserContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { ProductContext } from "../../services/state/ProductsContext";
 
