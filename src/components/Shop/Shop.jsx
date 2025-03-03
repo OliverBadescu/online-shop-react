@@ -39,9 +39,7 @@ export default function Shop(){
                 <a href="#">
                     <i className="fa-regular fa-heart" />
                 </a>
-                <a href="#" className="shopping-cart-icon">
-                    <i className="fa-solid fa-cart-shopping" />
-                </a>
+                <Link to={'/cart'} className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></Link>
                 </div>
             </div>
             <div className="aside-container-shop">
