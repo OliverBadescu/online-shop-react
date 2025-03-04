@@ -1051,3 +1051,26 @@ button:disabled{
   width: 30%;
   z-index: 100;
 }
+
+
+.card-section-product-page{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  width: 60%;
+  gap: 50px;
+  margin-top: 50px;
+}
+
+.order-success-container{
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.order-success-container button{
+  height: 50px;
+  border-radius: 50px;
+}

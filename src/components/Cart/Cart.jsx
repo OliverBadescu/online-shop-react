@@ -10,6 +10,11 @@ export default function Cart() {
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
 
+    const navigate = useNavigate();
+    const handleNavigation = (event, path) => {
+        event.preventDefault();
+        navigate(path);
+    };
     
     const fetchUserCart = async () => {
         let data = await getCartByUserId(user.id);
@@ -118,7 +123,7 @@ export default function Cart() {
                         <p>Total</p>
                         <p className="total-price">${total}</p>
                     </div>
-                    <button className="check-out-button">Check Out</button>
+                    <button className="check-out-button" onClick={() =>navigate('/checkout')}>Check Out</button>
                 </div>
             </div>
             <div className="info-container-cart">

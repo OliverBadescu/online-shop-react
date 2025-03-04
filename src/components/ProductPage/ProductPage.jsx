@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import ProductCard from '../ProductCard/ProductCard';
 import { ProductCardContext } from '../../services/state/productCardContext';
 import { useContext } from 'react';
 import test from '../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../services/api/cartService';
 import { UserContext } from '../../services/state/UserContext';
 import { Alert } from 'antd';
+import { ProductContext } from '../../services/state/ProductsContext';
 
 export default function ProductPage() {
     const { user } = useContext(UserContext);
     const { product } = useContext(ProductCardContext); 
     const [error, setError] = useState(true);
     const [quantity, setQuantity] = useState(1);
+
+    const [offset, setOffset] = useState(0);
+    const limit = 3;
+     
+    const { products } = useContext(ProductContext); 
 
 
     const handleInputChange = (e) => {
@@ -34,6 +41,9 @@ export default function ProductPage() {
         } else {
             setError(true);
         }
+    };
+    const handleShowMore = () => {
+        setOffset((prevOffset) => prevOffset + limit);
     };
 
     return (
@@ -117,7 +127,7 @@ export default function ProductPage() {
                             name="quantity"
                             id="quantity-product-page"
                             onChange={handleInputChange}
-                            value={quantity} // Use value instead of defaultValue
+                            value={quantity} 
                             min={1}
                             max={99}
                         />
@@ -160,8 +170,12 @@ export default function ProductPage() {
             </div>
             <div className="related-products-container products-container">
                 <h1>Related Products</h1>
-                <div className="card-section"></div>
-                <button className="show-more-button">Show More</button>
+                <div className="card-section-product-page">
+                    {products.slice(0, offset + limit).map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+                <button className="show-more-button" onClick={handleShowMore}>Show More</button>
             </div>
             <div className="footer-container">
                 <hr width="100%" />
