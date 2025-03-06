@@ -73,9 +73,7 @@ export default function ProductPage() {
                     </a>
                 </div>
                 <div className="navigation-container-icons">
-                    <a href="#" className="user-icon">
-                        <i className="fa-regular fa-user" />
-                    </a>
+                <Link to={'/account'} className="user-icon"><i className="fa-regular fa-user"></i></Link>
                     <a href="#">
                         <i className="fa-regular fa-heart" />
                     </a>

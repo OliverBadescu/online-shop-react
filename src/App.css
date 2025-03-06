@@ -1038,10 +1038,6 @@ button:disabled{
   
 }
 
-.save-changes-button{
-  display: none;
-}
-
 .alert-container-login{
   position: absolute;
   left: 0;
@@ -1073,4 +1069,19 @@ button:disabled{
 .order-success-container button{
   height: 50px;
   border-radius: 50px;
+}
+
+.orders-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.order-card{
+  border: 2px solid #b38a3b;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 0 10px 60px;
 }

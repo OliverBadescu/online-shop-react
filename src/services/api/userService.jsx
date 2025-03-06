@@ -17,35 +17,31 @@ function api(path, method = 'GET', body = null) {
   
   async function request(path, method = 'GET', body = null) {
     try {
-      const response = await api(path, method, body);
-      const data = await response.json().catch(() => null);
-  
-      if (response.status!=200) {
+        const response = await api(path, method, body);
+        const data = await response.json().catch(() => null);
 
+        
+        if (response.status === 200 || response.status === 202) {
+            return {
+                success: true,
+                status: response.status,
+                body: data,
+            };
+        }
+
+        
         const errorMessage = (data && data.message) || response.statusText || 'Request failed';
-      
-        let error=  new Error(errorMessage);
-
-        error.status=response.status;
-
+        const error = new Error(errorMessage);
+        error.status = response.status;
         throw error;
-      }
-  
-      return {
-        success: true,
-        status: response.status,
-        body: data,
-      };
     } catch (error) {
-
-      
-      return {
-        success: false,
-        status: error.status,
-        message: error.message || 'Something went wrong',
-      };
+        return {
+            success: false,
+            status: error.status || 500,
+            message: error.message || 'Something went wrong',
+        };
     }
-  }
+}
 
 
 export function login(loginRequest){
@@ -54,4 +50,12 @@ export function login(loginRequest){
 
 export function register(registerRequest){
   return request('register', 'POST', registerRequest);
+}
+
+export function getById(userId){
+  return request (`getUserById/${userId}`, 'GET');
+}
+
+export async function updateUser(userId, updateRequest){
+  return request(`update/${userId}`, 'PUT', updateRequest);
 }

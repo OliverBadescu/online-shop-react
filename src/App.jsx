@@ -12,6 +12,7 @@ import Checkout from './components/Checkout/Checkout'
 import ProductPage from './components/ProductPage/ProductPage'
 import ProductCardProvider from './services/state/productCardContext'
 import Cart from './components/Cart/Cart'
+import Account from './components/Account/Account'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
                 <Route path='/cart' element ={<Cart/>}/>
                 <Route path='/shop' element ={<Shop/>}/>
                 <Route path='/checkout' element ={<Checkout/>}/>
+                <Route path='/account' element ={<Account/>}/>
                 <Route path='/home' element ={ 
                     <ProtectedRoute>
                       <Home />
