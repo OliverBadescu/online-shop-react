@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import ProductCard from "../ProductCard/ProductCard";
-import { getAllProducts } from "../../services/api/productsService";
-import { UserContext } from "../../services/state/UserContext";
+import { getAllProducts } from "../../../services/api/productsService";
+import { UserContext } from "../../../services/state/UserContext";
 import { useNavigate, Link } from 'react-router-dom';
-import { ProductContext } from "../../services/state/ProductsContext";
+import { ProductContext } from "../../../services/state/ProductsContext";
 
 
 export default function Shop(){

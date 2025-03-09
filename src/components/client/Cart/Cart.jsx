@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
-import { UserContext } from "../../services/state/UserContext";
-import { getCartByUserId } from "../../services/api/cartService";
+import { UserContext } from "../../../services/state/UserContext";
+import { getCartByUserId } from "../../../services/api/cartService";
 import CartProductCard from "../CartProductCard/CartProductCard";
 import { useNavigate, Link } from 'react-router-dom';
 

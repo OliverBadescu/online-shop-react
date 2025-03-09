@@ -1,7 +1,7 @@
 import React from 'react';
-import image from  '../../assets/imgs/test.jpg'
+import image from  '../../../assets/imgs/test.jpg'
 import { useNavigate } from 'react-router-dom';
-import { ProductCardContext } from '../../services/state/productCardContext';
+import { ProductCardContext } from '../../../services/state/productCardContext';
 import { useContext } from 'react';
 
 export default function ProductCard({product}){
@@ -20,7 +20,7 @@ export default function ProductCard({product}){
 
         handleProductClick(product);
         navigate('/product-page');
-
+        window.scrollTo(0,0);
     }
 
     return (

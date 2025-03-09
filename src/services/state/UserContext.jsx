@@ -1,9 +1,17 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { login, register } from "../api/userService";
+import { useNavigate, Link } from 'react-router-dom';
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
+
+    const navigate = useNavigate();
+    const handleNavigation = (event, path) => {
+        event.preventDefault();
+        navigate(path);
+    };
+
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
     const [user, setUser] = useState({
@@ -26,6 +34,17 @@ export function UserProvider({ children }) {
         });
     };
 
+    const checkUser = () =>{
+
+        if(user.id == 0){
+            navigate('/');
+        }
+    }
+
+    useEffect(() => {
+        checkUser();
+    }, []);
+
     const handleLogin = async (loginRequest) => {
         setLoading(true);
         setErrors([]); 
@@ -37,14 +56,17 @@ export function UserProvider({ children }) {
             } else {
                 setErrors([]);
                 setUser(data.body);
-                return true; 
+                return {success: true, role:data.body.userRole}; 
             }
+            
         } catch (err) {
             setErrors(["An error occurred during login"]);
             return false; 
         } finally {
             setLoading(false);
         }
+
+        
     };
 
     const handleRegister = async (request) => {

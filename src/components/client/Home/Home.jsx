@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import ProductCard from "../ProductCard/ProductCard";
-import living from '../../assets/imgs/living.jpg';
-import dining from '../../assets/imgs/dining.jpg';
-import bedroom from '../../assets/imgs/bedroom.jpg';
-import setup from '../../assets/imgs/setup.png';
+import living from '../../../assets/imgs/living.jpg';
+import dining from '../../../assets/imgs/dining.jpg';
+import bedroom from '../../../assets/imgs/bedroom.jpg';
+import setup from '../../../assets/imgs/setup.png';
 import { useNavigate, Link } from 'react-router-dom';
-import { ProductContext } from "../../services/state/ProductsContext";
+import { ProductContext } from "../../../services/state/ProductsContext";
 
 export default function Home() {
     const [offset, setOffset] = useState(0);

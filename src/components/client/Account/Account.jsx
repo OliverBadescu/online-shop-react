@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../../services/state/UserContext";
-import { getAllCustomerOrders} from "../../services/api/orderService";
-import { getById, updateUser } from "../../services/api/userService";
+import { UserContext } from "../../../services/state/UserContext";
+import { getAllCustomerOrders} from "../../../services/api/orderService";
+import { getById, updateUser } from "../../../services/api/userService";
 import OrderCard from "../OrderCard/OrderCard";
 import { Alert } from "antd"; 
 import { useNavigate, Link } from 'react-router-dom';
@@ -16,7 +16,6 @@ export default function Account() {
     const [showAlert, setShowAlert] = useState(false); 
     const [alertMessage, setAlertMessage] = useState(""); 
 
-    
     const fetchUserDetails = async () => {
         const response = await getById(contextUser.id);
         if (response.success) {

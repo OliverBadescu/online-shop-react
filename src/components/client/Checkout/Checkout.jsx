@@ -1,10 +1,9 @@
-import { getCartByUserId } from "../../services/api/cartService";
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../services/state/UserContext";
+import { UserContext } from "../../../services/state/UserContext";
 import CheckoutProduct from "./CheckoutProduct";
 import { useNavigate, Link } from 'react-router-dom';
-import { addOrder } from "../../services/api/orderService";
-import { clearUserCart } from "../../services/api/cartService";
+import { addOrder } from "../../../services/api/orderService";
+import { clearUserCart, getCartByUserId } from "../../../services/api/cartService";
 
 export default function Checkout(){
 

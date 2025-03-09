@@ -2,34 +2,32 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../services/state/UserContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { Alert } from 'antd';
+import { useForm } from "react-hook-form";
+
 
 export default function Login() {
     const navigate = useNavigate();
-    const { handleLogin, errors, setErrors } = useContext(UserContext); 
-    const [loginRequest, setLoginRequest] = useState({ email: "", password: "" });
-    const [fields, setFields] = useState(false);
+    const { handleLogin, errors:loginErrors, setErrors,  user } = useContext(UserContext); 
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setLoginRequest({ ...loginRequest, [name]: value });
-        setFields(false);
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: {errors},
+    } = useForm();
 
-    const handleSubmit = async () => {
 
-        setFields(false);
+    const onSubmit = async (data) => {
 
-        if (!loginRequest.email.trim() || !loginRequest.password.trim()) {
-            setFields(true);
-            return;
-        }
 
-        setFields(false);
-        const success = await handleLogin(loginRequest); 
-        
-        
-        if (success) {
-            navigate('/home');
+        const req = await handleLogin(data); 
+
+        if (req.success) {
+            if(req.role=='ADMIN'){
+                navigate('/admin-page');
+            }else{
+                navigate('/home');
+            }
+            
         }
     };
 
@@ -42,21 +40,11 @@ export default function Login() {
 
     return (
         <>
-            {errors.length > 0 && (
+            {loginErrors.length > 0 && (
                 <Alert 
                     className="alert-container-login"
                     message="Error"
-                    description={errors.join(", ")}
-                    type="error"
-                    showIcon
-                    closable
-                />
-            )}  
-            {fields && (
-                <Alert 
-                    className="alert-container-login"
-                    message="Error"
-                    description={"Please fill in all fields"}
+                    description={loginErrors.join(", ")}
                     type="error"
                     showIcon
                     closable
@@ -64,28 +52,38 @@ export default function Login() {
             )}  
             <div className="login-page">
                 <div>
-                    <div className="login-container">
+                    <form className="login-container" onSubmit={handleSubmit(onSubmit)}>
                         <h1>Log in</h1>
                         <input
+                            placeholder="Your email here"
                             type="email"
-                            name="email"
-                            value={loginRequest.email}
-                            onChange={handleInputChange}
-                            placeholder="Your email"
+                            {...register("email", {
+                              required: "Email is required",
+                              pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "Invalid email address",
+                              },
+                            })}
                         />
+                        {errors.email && <p className="error">{errors.email.message}</p>}
                         <input
-                            type="password"
-                            name="password"
-                            value={loginRequest.password}
-                            onChange={handleInputChange}
-                            placeholder="Your password"
+                            placeholder="Your password here"
+                           type="password"
+                           {...register    ("password", {
+                             required: "Password is required",
+                             minLength: {
+                               value: 3,
+                               message: "Password must be at least 6 characters",
+                             },
+                           })}
                         />
+                         {errors.password && <p className="error">{errors.password.message}</p>}
 
                         <p>Don't have an account? <Link to={"/register"} className="register-link">Register here</Link></p>
-                        <button className="login-button" onClick={handleSubmit}>
+                        <button className="login-button" type="submit">
                             Log in
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </>

@@ -2,41 +2,27 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../services/state/UserContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { Alert } from 'antd';
+import { useForm } from "react-hook-form";
 
 export default function Register() {
-    const [request, setRequest] = useState({
-        fullName: "",
-        email: "",
-        password: "",
-        phone: "",
-        country: "",
-        billingAddress: "",
-        shippingAddress: ""
-    });
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+      } = useForm();
 
     const navigate = useNavigate();
-    const { handleRegister, errors, setErrors } = useContext(UserContext); 
+    const { handleRegister,errors: registerErrors, setErrors } = useContext(UserContext); 
     const [registered, setRegistered] = useState(false);
-    const [fields, setFields] = useState(false);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setRequest({ ...request, [name]: value });
-        setFields(false);
-    };
 
-    const handleSubmit = async () => {
-        setFields(false);
-        if (!request.fullName || !request.email || !request.password || !request.phone || !request.country || !request.billingAddress || !request.shippingAddress) {
-            setFields(true);
-            return;
-        }
+    const onSubmit = async (data) => {
 
-        const success = await handleRegister(request);
-        setFields(false);
+        const success = await handleRegister(data);
         if (success) {
             setRegistered(true);
-            setTimeout(() => navigate('/login'), 2000); 
+            reset();
         }
     };
 
@@ -49,11 +35,11 @@ export default function Register() {
 
     return (
         <>
-            {errors.length > 0 && (
+            {registerErrors.length > 0 && (
                 <Alert
                     className="alert-container-login"
                     message="Error"
-                    description={errors.join(", ")}
+                    description={registerErrors.join(", ")}
                     type="error"
                     showIcon
                     closable
@@ -69,90 +55,95 @@ export default function Register() {
                     closable
                 />
             )}
-            {fields && (
-                <Alert 
-                    className="alert-container-login"
-                    message="Error"
-                    description={"Please fill in all fields"}
-                    type="error"
-                    showIcon
-                    closable
-                />
-            )}  
+        
 
             <div className="register-page">
                 <div>
-                <div className="register-container">
+                <form className="register-container" onSubmit={handleSubmit(onSubmit)}>
                     <h1>Register</h1>
                     <div className="email-input">
                         <p>Email:</p>
                         <input
-                            onChange={handleInputChange}
                             type="email"
                             name="email"
                             id="email-register"
                             placeholder="Your email here"
+                            {...register("email", {
+                                required: "Email is required",
+                                pattern: {
+                                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                  message: "Invalid email address",
+                                },
+                            })}
+
                         />
+                        {errors.email && <p className="error">{errors.email.message}</p>}
                     </div>
                     <div className="password-input">
                         <p>Password:</p>
                         <input
-                            onChange={handleInputChange}
                             type="password"
                             name="password"
                             id="password-register"
                             placeholder="Your password here"
+                            {...register("password", { required: "Password is required", minLength: {value: 3, message: "Password must be at least 6 characters"} })}
                         />
+                        {errors.password && <p className="error">{errors.password.message}</p>}
                     </div>
                     <div className="name-input">
                         <p>Full name:</p>
                         <input
-                            onChange={handleInputChange}
                             type="text"
                             name="fullName"
                             id="name-register"
                             placeholder="Your full name here"
+                            {...register("fullName", { required: "Full name is required" })}
                         />
+                        {errors.fullName && <p className="error">{errors.fullName.message}</p>}
                     </div>
                     <div className="phone-input">
                         <p>Phone:</p>
                         <input
-                            onChange={handleInputChange}
                             type="number"
                             name="phone"
                             id="phone-register"
                             placeholder="Your phone number here"
+                            {...register("phone", { required: "Phone is required" })}
                         />
+                        {errors.phone && <p className="error">{errors.phone.message}</p>}
                     </div>
                     <div className="country-input">
                         <p>Country:</p>
                         <input
-                            onChange={handleInputChange}
                             type="text"
                             name="country"
                             id="country-register"
                             placeholder="Your country here"
+                            {...register("country", { required: "Country is required" })}
                         />
+                        {errors.country && <p className="error">{errors.country.message}</p>}
                     </div>
                     <div className="billing-input">
                         <p>Billing address:</p>
                         <input
-                            onChange={handleInputChange}
                             type="text"
                             name="billingAddress"
                             id="billing-register"
                             placeholder="Your billing address here"
+                            {...register("billingAddress", { required: "Billing address is required" })}
                         />
+                        {errors.billingAddress && <p className="error">{errors.billingAddress.message}</p>}
                     </div>
                     <div className="shipping-input">
                         <p>Shipping address:</p>
                         <input
-                            onChange={handleInputChange}
                             type="text"
                             name="shippingAddress"
                             id="shipping-register"
                             placeholder="Your shipping address here"
+                            {...register("shippingAddress", { required: "Shipping address is required" })}
                         />
+                        {errors.shippingAddress && <p className="error">{errors.shippingAddress.message}</p>}
                     </div>
                     <p>
                         Already have an account?
@@ -160,8 +151,8 @@ export default function Register() {
                             Log in here
                         </Link>
                     </p>
-                    <button className="register-button" onClick={handleSubmit}>Register</button>
-                </div>
+                    <button className="register-button" type="submit">Register</button>
+                </form>
                 </div>
             </div>
         </>

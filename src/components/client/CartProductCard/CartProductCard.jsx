@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../services/state/UserContext";
-import { updateCartQuantity, deleteProductFromCart } from "../../services/api/cartService";
+import { UserContext } from "../../../services/state/UserContext";
+import { updateCartQuantity, deleteProductFromCart } from "../../../services/api/cartService";
 
 export default function CartProductCard({ product, onDelete, onQuantityUpdate }) {
     const { user } = useContext(UserContext);
@@ -9,11 +9,10 @@ export default function CartProductCard({ product, onDelete, onQuantityUpdate })
     const subtotal = (product.price * quantity).toFixed(2);
 
     const handleInputChange = async (event) => {
-        const newQuantity = parseInt(event.target.value, 10);
+        let newQuantity = parseInt(event.target.value, 10);
 
-        if (newQuantity < 1) {
-            return;
-        }
+        if (isNaN(newQuantity)) newQuantity = 1;
+        
 
         const request = {
             quantity: newQuantity

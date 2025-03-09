@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
-import { ProductCardContext } from '../../services/state/productCardContext';
+import { ProductCardContext } from '../../../services/state/productCardContext';
 import { useContext } from 'react';
-import test from '../../assets/imgs/test.jpg';
-import { addProductToCart } from '../../services/api/cartService';
-import { UserContext } from '../../services/state/UserContext';
+import test from '../../../assets/imgs/test.jpg';
+import { addProductToCart } from '../../../services/api/cartService';
+import { UserContext } from '../../../services/state/UserContext';
 import { Alert } from 'antd';
-import { ProductContext } from '../../services/state/ProductsContext';
+import { ProductContext } from '../../../services/state/ProductsContext';
 
 export default function ProductPage() {
     const { user } = useContext(UserContext);
@@ -21,9 +21,19 @@ export default function ProductPage() {
     const { products } = useContext(ProductContext); 
 
 
-    const handleInputChange = (e) => {
-        const { value } = e.target;
-        setQuantity(Number(value));
+    const handleInputChange = (event) => {
+        let value = parseInt(event.target.value, 10);
+        if (isNaN(value)) value = 1;
+        if (value < 1) value = 1;
+        if (value > 99) value = 99;
+        setQuantity(value);
+    };
+    const increaseQuantity = () => {
+        setQuantity((prevQuantity) => (prevQuantity < 99 ? prevQuantity + 1 : 99));
+    };
+
+    const decreaseQuantity = () => {
+        setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
     };
 
     const handleAddToCart = async () => {
@@ -120,15 +130,19 @@ export default function ProductPage() {
                         {product.description}
                     </p>
                     <div className="add-to-cart-product-page">
+                    <div className="quantity-wrapper">
+                        <button onClick={decreaseQuantity} className="quantity-btn minus">-</button>
                         <input
                             type="number"
                             name="quantity"
                             id="quantity-product-page"
                             onChange={handleInputChange}
-                            value={quantity} 
+                            value={quantity}
                             min={1}
                             max={99}
                         />
+                        <button onClick={increaseQuantity} className="quantity-btn plus">+</button>
+                    </div>
                         <button className="add-to-cart-product-page-button" onClick={handleAddToCart}>Add To Cart</button>
                     </div>
                     <hr className="hr-product-page" />
