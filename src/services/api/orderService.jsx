@@ -50,3 +50,15 @@ function api(path, method = 'GET', body = null) {
   export function getRecentOrders(){
     return request('getRecentOrders', 'GET');
   }
+
+  export function totalOrders(){
+    return request('totalOrders','GET');
+  }
+
+  export function totalRevenue(){
+    return request('totalRevenue', 'GET');
+  }
+
+  export function monthly(){
+    return request('monthly', 'GET');
+  }

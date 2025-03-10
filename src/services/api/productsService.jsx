@@ -45,3 +45,7 @@ function api(path, method = 'GET', body = null) {
   export function getAllProducts(){
     return request('getAllProducts', 'GET');
   }
+
+  export function totalProducts(){
+    return request('totalProducts', 'GET');
+  }
