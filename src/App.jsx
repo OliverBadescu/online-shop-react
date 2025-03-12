@@ -14,6 +14,7 @@ import ProductCardProvider from './services/state/productCardContext'
 import Cart from './components/client/Cart/Cart'
 import Account from './components/client/Account/Account'
 import AdminPage from './components/admin/AdminPage/AdminPage'
+import ProductPageAdmin from './components/admin/ProductPageAdmin/ProductPageAdmin';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
                   <Route path='/checkout' element ={<Checkout/>}/>
                   <Route path='/account' element ={<Account/>}/>
                   <Route path='/admin-page' element ={<AdminPage/>}/>
+                  <Route path='/product-page-admin' element ={<ProductPageAdmin/>}/>
                   <Route path='/home' element ={ 
                       <ProtectedRoute>
                         <Home />

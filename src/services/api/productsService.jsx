@@ -49,3 +49,15 @@ function api(path, method = 'GET', body = null) {
   export function totalProducts(){
     return request('totalProducts', 'GET');
   }
+
+  export function mostSold(){
+    return request('mostSold', 'GET');
+  }
+
+  export function updateProduct(id, data){
+    return request(`${id}`, 'PUT', data);
+  }
+
+  export function deleteProduct(id){
+    return request(`${id}`, 'DELETE');
+  }
