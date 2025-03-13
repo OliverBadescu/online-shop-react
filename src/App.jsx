@@ -15,6 +15,7 @@ import Cart from './components/client/Cart/Cart'
 import Account from './components/client/Account/Account'
 import AdminPage from './components/admin/AdminPage/AdminPage'
 import ProductPageAdmin from './components/admin/ProductPageAdmin/ProductPageAdmin';
+import UsersPageAdmin from './components/admin/UserPage/UserPage';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
                   <Route path='/account' element ={<Account/>}/>
                   <Route path='/admin-page' element ={<AdminPage/>}/>
                   <Route path='/product-page-admin' element ={<ProductPageAdmin/>}/>
+                  <Route path='/user-page-admin' element ={<UsersPageAdmin/>}/>
                   <Route path='/home' element ={ 
                       <ProtectedRoute>
                         <Home />

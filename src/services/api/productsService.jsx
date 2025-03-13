@@ -61,3 +61,7 @@ function api(path, method = 'GET', body = null) {
   export function deleteProduct(id){
     return request(`${id}`, 'DELETE');
   }
+
+  export function addProduct(data){
+    return request('addProduct', 'POST', data);
+  }

@@ -12,8 +12,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { getAllProducts, updateProduct, deleteProduct } from "../../../services/api/productsService";
-import { useNavigate, Link } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import { getAllProducts, updateProduct, deleteProduct, addProduct } from "../../../services/api/productsService";
+import { getAllCategories } from "../../../services/api/categoryService";
+import { Link } from 'react-router-dom';
 
 export default function ProductPageAdmin() {
     const [products, setProducts] = useState([]);
@@ -21,6 +26,7 @@ export default function ProductPageAdmin() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [openAddDialog, setOpenAddDialog] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [editFormData, setEditFormData] = useState({
         category: '',
@@ -30,7 +36,16 @@ export default function ProductPageAdmin() {
         stock: 0,
         weight: 0,
     });
-    const [searchTerm, setSearchTerm] = useState(""); 
+    const [addFormData, setAddFormData] = useState({
+        category: '',
+        description: '',
+        name: '',
+        price: '',
+        stock: 0,
+        weight: 0,
+    });
+    const [categories, setCategories] = useState([]); 
+    const [searchTerm, setSearchTerm] = useState("");
 
     const columns = [
         { id: "name", label: "Product Name", minWidth: 170 },
@@ -40,12 +55,13 @@ export default function ProductPageAdmin() {
         { id: "actions", label: "Actions", minWidth: 100, align: "right" }
     ];
 
+   
     const fetchProducts = async () => {
         try {
             let data = await getAllProducts();
             if (data && Array.isArray(data.body.list)) {
                 setProducts(data.body.list);
-                setFilteredProducts(data.body.list); 
+                setFilteredProducts(data.body.list);
             } else {
                 console.error("Invalid API response: ", data);
             }
@@ -54,22 +70,38 @@ export default function ProductPageAdmin() {
         }
     };
 
+    
+    const fetchCategories = async () => {
+        try {
+            let data = await getAllCategories();
+            if (data && Array.isArray(data.body.list)) {
+                setCategories(data.body.list); 
+            } else {
+                console.error("Invalid API response: ", data);
+            }
+        } catch (err) {
+            console.error("Error fetching categories: ", err);
+        }
+    };
+
     useEffect(() => {
         fetchProducts();
+        fetchCategories(); 
     }, []);
 
-   
+    
     const handleSearchChange = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
 
-        
+       
         const filtered = products.filter((product) =>
             product.name.toLowerCase().includes(term.toLowerCase())
         );
         setFilteredProducts(filtered);
     };
 
+    
     const handleEditClick = (product) => {
         setSelectedProduct(product);
         setEditFormData({
@@ -83,6 +115,7 @@ export default function ProductPageAdmin() {
         setOpenEditDialog(true);
     };
 
+   
     const handleEditFormChange = (event) => {
         const { name, value } = event.target;
         setEditFormData({
@@ -91,22 +124,57 @@ export default function ProductPageAdmin() {
         });
     };
 
+    
     const handleEditFormSubmit = async () => {
         try {
             await updateProduct(selectedProduct.id, editFormData);
             setOpenEditDialog(false);
-            fetchProducts();
+            fetchProducts(); 
         } catch (err) {
             console.error("Error updating product: ", err);
         }
     };
 
+
     const handleDeleteClick = async (productId) => {
         try {
             await deleteProduct(productId);
-            fetchProducts();
+            fetchProducts(); 
         } catch (err) {
             console.error("Error deleting product: ", err);
+        }
+    };
+
+    
+    const handleAddClick = () => {
+        setOpenAddDialog(true);
+    };
+
+    
+    const handleAddFormChange = (event) => {
+        const { name, value } = event.target;
+        setAddFormData({
+            ...addFormData,
+            [name]: value
+        });
+    };
+
+    
+    const handleAddFormSubmit = async () => {
+        try {
+            await addProduct(addFormData); 
+            setOpenAddDialog(false);
+            fetchProducts(); 
+            setAddFormData({ 
+                category: '',
+                description: '',
+                name: '',
+                price: '',
+                stock: 0,
+                weight: 0,
+            });
+        } catch (err) {
+            console.error("Error adding product: ", err);
         }
     };
 
@@ -122,6 +190,7 @@ export default function ProductPageAdmin() {
             </div>
 
             <div className="main-container-admin container-products-admin">
+               
                 <TextField
                     fullWidth
                     margin="normal"
@@ -131,7 +200,17 @@ export default function ProductPageAdmin() {
                     onChange={handleSearchChange}
                 />
 
-                <div className="products-container">
+               
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddClick}
+                    style={{ marginBottom: '20px' }}
+                >
+                    Add Product
+                </Button>
+
+                <div className="products-container-admin">
                     <h2>All Products</h2>
                     <Paper sx={{ width: "100%", overflow: "hidden" }}>
                         <TableContainer sx={{ maxHeight: 440 }}>
@@ -206,7 +285,6 @@ export default function ProductPageAdmin() {
                         onChange={handleEditFormChange}
                     />
                     <TextField
-                        autoFocus
                         margin="dense"
                         name="description"
                         label="Product Description"
@@ -215,15 +293,20 @@ export default function ProductPageAdmin() {
                         value={editFormData.description}
                         onChange={handleEditFormChange}
                     />
-                    <TextField
-                        margin="dense"
-                        name="category"
-                        label="Category"
-                        type="text"
-                        fullWidth
-                        value={editFormData.category}
-                        onChange={handleEditFormChange}
-                    />
+                    <FormControl fullWidth margin="dense">
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                            name="category"
+                            value={editFormData.category}
+                            onChange={handleEditFormChange}
+                        >
+                            {categories.map((category) => (
+                                <MenuItem key={category.id} value={category.name}>
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <TextField
                         margin="dense"
                         name="price"
@@ -255,6 +338,77 @@ export default function ProductPageAdmin() {
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancel</Button>
                     <Button onClick={handleEditFormSubmit}>Save</Button>
+                </DialogActions>
+            </Dialog>
+
+            
+            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)}>
+                <DialogTitle>Add Product</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="name"
+                        label="Product Name"
+                        type="text"
+                        fullWidth
+                        value={addFormData.name}
+                        onChange={handleAddFormChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="description"
+                        label="Product Description"
+                        type="text"
+                        fullWidth
+                        value={addFormData.description}
+                        onChange={handleAddFormChange}
+                    />
+                    <FormControl fullWidth margin="dense">
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                            name="category"
+                            value={addFormData.category}
+                            onChange={handleAddFormChange}
+                        >
+                            {categories.map((category) => (
+                                <MenuItem key={category.id} value={category.name}>
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <TextField
+                        margin="dense"
+                        name="price"
+                        label="Price"
+                        type="number"
+                        fullWidth
+                        value={addFormData.price}
+                        onChange={handleAddFormChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="stock"
+                        label="Stock"
+                        type="number"
+                        fullWidth
+                        value={addFormData.stock}
+                        onChange={handleAddFormChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="weight"
+                        label="Weight"
+                        type="number"
+                        fullWidth
+                        value={addFormData.weight}
+                        onChange={handleAddFormChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenAddDialog(false)}>Cancel</Button>
+                    <Button onClick={handleAddFormSubmit}>Add</Button>
                 </DialogActions>
             </Dialog>
         </>

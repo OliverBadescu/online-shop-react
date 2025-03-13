@@ -63,3 +63,11 @@ export async function updateUser(userId, updateRequest){
 export function totalUsers(){
   return request('totalUsers', 'GET');
 }
+
+export function getAllUsers(){
+  return request('getAllUsers', 'GET');
+}
+
+export function deleteUser(id){
+  return request(`delete/${id}`, 'DELETE');
+}
