@@ -39,7 +39,6 @@ export default function Home() {
                 </div>
                 <div className="navigation-container-icons">
                     <Link to={'/account'} className="user-icon"><i className="fa-regular fa-user"></i></Link>
-                    <a href="#"><i className="fa-regular fa-heart"></i></a>
                     <Link to={'/cart'} className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></Link>
                 </div>
             </div>

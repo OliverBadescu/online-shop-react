@@ -93,10 +93,7 @@ export default function Checkout(){
                             <a href="#"><p>Contact</p></a>
                         </div>
                         <div className="navigation-container-icons">
-                            <a href="#" className="user-icon">
-                                <i className="fa-regular fa-user" />
-                            </a>
-                            <a href="#"><i className="fa-regular fa-heart" /></a>
+                            <Link to={'/account'} className="user-icon"><i className="fa-regular fa-user"></i></Link>
                             <Link to={'/cart'} className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></Link>
                         </div>
                     </div>

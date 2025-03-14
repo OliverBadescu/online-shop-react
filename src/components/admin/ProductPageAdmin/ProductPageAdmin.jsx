@@ -184,8 +184,8 @@ export default function ProductPageAdmin() {
                 <h1>Furniro</h1>
                 <div className="navigation-container admin-container-nav">
                     <Link to={'/admin-page'}>Home</Link>
-                    <a href="#">Orders</a>
-                    <a href="#">Users</a>
+                    <Link to={'/order-page-admin'}>Orders</Link>
+                  <Link to={'/user-page-admin'}>Users</Link>
                 </div>
             </div>
 

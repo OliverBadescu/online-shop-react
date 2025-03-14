@@ -72,9 +72,6 @@ export default function Cart() {
                 <div className="navigation-container-icons">
                 <Link to={'/account'} className="user-icon"><i className="fa-regular fa-user"></i></Link>
                     <a href="#">
-                        <i className="fa-regular fa-heart" />
-                    </a>
-                    <a href="#">
                         <i className="fa-solid fa-cart-shopping" />
                     </a>
                 </div>
@@ -121,7 +118,7 @@ export default function Cart() {
                         <p>Total</p>
                         <p className="total-price">${total}</p>
                     </div>
-                    <button className="check-out-button" onClick={() =>navigate('/checkout')}>Check Out</button>
+                    <button className="check-out-button" onClick={() =>navigate('/checkout')} disabled = {cart.length===0}>Check Out</button>
                 </div>
             </div>
             <div className="info-container-cart">

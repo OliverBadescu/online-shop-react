@@ -136,7 +136,7 @@ export default function AdminPage() {
                 <h1>Furniro</h1>
                 <div className="navigation-container admin-container-nav">
                     <Link to={'/product-page-admin'}>Products</Link>
-                    <a href="#">Orders</a>
+                    <Link to={'/order-page-admin'}>Orders</Link>
                     <Link to={'/user-page-admin'}>Users</Link>
                 </div>
             </div>
@@ -170,7 +170,7 @@ export default function AdminPage() {
                     />
                 </div>
 
-                <div className="orders-container">
+                <div className="orders-container-admin">
                     <h2>Recent Orders</h2>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                         <TableContainer sx={{ maxHeight: 440 }}>

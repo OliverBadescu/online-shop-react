@@ -62,3 +62,19 @@ function api(path, method = 'GET', body = null) {
   export function monthly(){
     return request('monthly', 'GET');
   }
+
+  export function getAllOrders(){
+    return request('getAllOrders', 'GET');
+  }
+
+  export function deleteOrder(id){
+    return request(`deleteOrder/${id}`, 'DELETE');
+  }
+
+  export function updateOrder(id, data){
+    return request(`updateOrder/${id}`, 'PUT', data);
+  }
+
+  export function cancelOrder(id){
+    return request(`cancelOrder/${id}`, 'PUT');
+  }

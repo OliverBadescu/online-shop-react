@@ -1,30 +1,29 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../../services/state/UserContext";
-import { getAllCustomerOrders} from "../../../services/api/orderService";
+import { getAllCustomerOrders } from "../../../services/api/orderService";
 import { getById, updateUser } from "../../../services/api/userService";
 import OrderCard from "../OrderCard/OrderCard";
-import { Alert } from "antd"; 
+import { Alert } from "antd";
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Account() {
     const { user: contextUser } = useContext(UserContext);
-    const [user, setUser] = useState(contextUser); 
+    const [user, setUser] = useState(contextUser);
     const [orders, setOrders] = useState([]);
-    const [activeSection, setActiveSection] = useState("account"); 
-    const [isModified, setIsModified] = useState(false); 
-    const [updatedUser, setUpdatedUser] = useState({}); 
-    const [showAlert, setShowAlert] = useState(false); 
-    const [alertMessage, setAlertMessage] = useState(""); 
+    const [activeSection, setActiveSection] = useState("account");
+    const [isModified, setIsModified] = useState(false);
+    const [updatedUser, setUpdatedUser] = useState({});
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
 
     const fetchUserDetails = async () => {
         const response = await getById(contextUser.id);
         if (response.success) {
             setUser(response.body);
-            setUpdatedUser(response.body); 
+            setUpdatedUser(response.body);
         }
     };
 
-    
     const fetchOrders = async () => {
         const response = await getAllCustomerOrders(contextUser.id);
         if (response.success) {
@@ -37,43 +36,34 @@ export default function Account() {
         fetchOrders();
     }, []);
 
-    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedUser((prev) => ({ ...prev, [name]: value })); 
-        setIsModified(true); 
+        setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+        setIsModified(true);
     };
 
-    
     const handleSaveChanges = async () => {
-        
         const updateRequest = {
             fullName: updatedUser.fullName,
             email: updatedUser.email,
             phone: updatedUser.phone,
             country: updatedUser.country,
-            billingAddress: updatedUser.billing, 
-            shippingAddress: updatedUser.shipping, 
+            billingAddress: updatedUser.billing,
+            shippingAddress: updatedUser.shipping,
         };
 
-        const response = await updateUser(user.id, updateRequest); 
+        const response = await updateUser(user.id, updateRequest);
         if (response.success) {
-            setUser(updatedUser); 
-            setIsModified(false); 
-
-            
+            setUser(updatedUser);
+            setIsModified(false);
             setAlertMessage("Changes saved successfully!");
             setShowAlert(true);
-
-            
             setTimeout(() => {
                 setShowAlert(false);
             }, 3000);
         } else {
-           
             setAlertMessage(`Failed to save changes: ${response.message}`);
             setShowAlert(true);
-
             setTimeout(() => {
                 setShowAlert(false);
             }, 3000);
@@ -84,9 +74,18 @@ export default function Account() {
         setActiveSection(section);
     };
 
+    const handleOrderCancelled = (cancelledOrderId) => {
+        setOrders((prevOrders) =>
+            prevOrders.map((order) =>
+                order.id === cancelledOrderId
+                    ? { ...order, orderStatus: "CANCELLED" }
+                    : order
+            )
+        );
+    };
+
     return (
         <>
-         
             {showAlert && (
                 <Alert
                     className="alert-container-login"
@@ -94,16 +93,16 @@ export default function Account() {
                     type={alertMessage.includes("successfully") ? "success" : "error"}
                     showIcon
                     closable
-                    onClose={() => setShowAlert(false)} 
+                    onClose={() => setShowAlert(false)}
                 />
             )}
 
             <div className="header-container">
                 <h1>Furniro</h1>
                 <div className="navigation-container">
-                <Link to={'/home'} className="home-link">
-                    <p>Home</p>
-                </Link>
+                    <Link to={'/home'} className="home-link">
+                        <p>Home</p>
+                    </Link>
                     <Link to={'/shop'} className="shop-link"><p>Shop</p></Link>
                     <a href="#">
                         <p>About</p>
@@ -115,9 +114,6 @@ export default function Account() {
                 <div className="navigation-container-icons">
                     <a href="#" className="user-icon">
                         <i className="fa-regular fa-user" />
-                    </a>
-                    <a href="#">
-                        <i className="fa-regular fa-heart" />
                     </a>
                     <Link to={'/cart'} className="shopping-cart-icon"><i className="fa-solid fa-cart-shopping"></i></Link>
                 </div>
@@ -220,7 +216,11 @@ export default function Account() {
                         <div className="orders-container">
                             {orders.length > 0 ? (
                                 orders.map((order) => (
-                                    <OrderCard key={order.id} order={order} />
+                                    <OrderCard
+                                        key={order.id}
+                                        order={order}
+                                        onOrderCancelled={handleOrderCancelled}
+                                    />
                                 ))
                             ) : (
                                 <p>No orders found.</p>
