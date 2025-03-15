@@ -702,13 +702,51 @@ input[type=text] {
 /* ==================== */
 /* Shop Page Styles */
 /* ==================== */
-.filter-container {
+.search-container-container {
   display: flex;
   gap: 20px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 50px;
   background-color: #f9f1e7;
+}
+
+.search-bar {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0px auto;
+  margin-left: 330px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:hover {
+  background: #f5f5f5;
 }
 
 .result-text {

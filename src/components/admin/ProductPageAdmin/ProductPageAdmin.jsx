@@ -23,8 +23,6 @@ import { Link } from 'react-router-dom';
 export default function ProductPageAdmin() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -230,7 +228,7 @@ export default function ProductPageAdmin() {
                                 </TableHead>
                                 <TableBody>
                                     {filteredProducts
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        
                                         .map((product) => (
                                             <TableRow hover role="checkbox" tabIndex={-1} key={product.id}>
                                                 {columns.map((column) => {
