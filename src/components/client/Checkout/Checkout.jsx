@@ -19,7 +19,7 @@ export default function Checkout(){
     };
 
     const fetchUserCart = async () => {
-        let data = await getCartByUserId(user.id);
+        let data = await getCartByUserId();
         if (data.success) {
             setCart(data.body.list);
         }
@@ -60,11 +60,11 @@ export default function Checkout(){
             productList: productList
         };
 
-        let data = await addOrder(user.id, orderRequest);
+        let data = await addOrder(orderRequest);
 
         if (data.success) {
             setOrderPlaced(true);
-            await clearUserCart(user.id);
+            await clearUserCart();
         } else {
             setOrderPlaced(false);
         }

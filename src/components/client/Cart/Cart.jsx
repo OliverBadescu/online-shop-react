@@ -11,13 +11,11 @@ export default function Cart() {
     const [total, setTotal] = useState(0);
 
     const navigate = useNavigate();
-    const handleNavigation = (event, path) => {
-        event.preventDefault();
-        navigate(path);
-    };
+    ;
     
     const fetchUserCart = async () => {
-        let data = await getCartByUserId(user.id);
+        let data = await getCartByUserId();
+
         if (data.success) {
             setCart(data.body.list);
         }
@@ -37,7 +35,7 @@ export default function Cart() {
 
     
     const handleProductDelete = async (productId) => {
-        const data = await deleteProductFromCart(user.id, productId);
+        const data = await deleteProductFromCart( productId);
 
         if (data.success) {
            

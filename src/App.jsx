@@ -2,7 +2,6 @@
 import './App.css'
 import Home from './components/client/Home/Home'
 import { UserProvider } from './services/state/UserContext'
-import { ProductProvider } from './services/state/ProductsContext'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/Route/ProtectedRoute'
 import Login from './components/Login/Login'
@@ -26,8 +25,7 @@ function App() {
       
       
       <Router>
-        <UserProvider>
-          <ProductProvider>
+        <UserProvider>    
             <ProductCardProvider>
                 <Routes>
                   <Route path='/' element ={<Login/>}/>
@@ -48,8 +46,8 @@ function App() {
                       </ProtectedRoute>
                     }
                     />
-                </Routes></ProductCardProvider>
-          </ProductProvider>
+                </Routes>
+            </ProductCardProvider>
         </UserProvider>
       </Router>
           

@@ -1,106 +1,120 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { login, register } from "../api/userService";
-import { useNavigate, Link } from 'react-router-dom';
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [user, setUser] = useState({
+    email: "",
+    fullName: "",
+    id: 0,
+    jwtToken: "",
+    phone: "",
+    role: ""
+  });
 
-    const navigate = useNavigate();
-    const handleNavigation = (event, path) => {
-        event.preventDefault();
-        navigate(path);
-    };
+  const checkUser = () =>{
 
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState([]);
-    const [user, setUser] = useState({
-        email: "",
-        fullName: "",
-        id: 0,
-        jwtToken: "",
-        phone: "",
-        role: ""
-    });
-
-    const handleLogout = () => {
-        setUser({
-            email: "",
-            fullName: "",
-            id: 0,
-            jwtToken: "",
-            phone: "",
-            role: ""
-        });
-    };
-
-    const checkUser = () =>{
-
-        if(user.id == 0){
-            navigate('/');
-        }
+    if(user.id == 0){
+        navigate('/');
     }
+}
 
     useEffect(() => {
         checkUser();
     }, []);
 
-    const handleLogin = async (loginRequest) => {
-        setLoading(true);
-        setErrors([]); 
-        try {
-            const data = await login(loginRequest);
-            if (!data.success) {
-                setErrors(["Invalid credentials, please try again"]);
-                return false; 
-            } else {
-                setErrors([]);
-                setUser(data.body);
-                return {success: true, role:data.body.userRole}; 
-            }
-            
-        } catch (err) {
-            setErrors(["An error occurred during login"]);
-            return false; 
-        } finally {
-            setLoading(false);
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (input, init = {}) => {
+      init.headers = init.headers || {};
+      if (user.jwtToken) {
+        init.headers.Authorization = `Bearer ${user.jwtToken}`;
+      }
+      try {
+        const response = await originalFetch(input, init);
+        if (response.status === 401) {
+          handleLogout();
         }
-
-        
+        return response;
+      } catch (err) {
+        throw err;
+      }
     };
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, [user.jwtToken]);
 
-    const handleRegister = async (request) => {
-        setLoading(true);
+  function handleLogout() {
+    setUser({
+      email: "",
+      fullName: "",
+      id: 0,
+      jwtToken: "",
+      phone: "",
+      role: ""
+    });
+    navigate("/");
+  }
+
+  async function handleLogin(loginRequest) {
+    setLoading(true);
+    setErrors([]);
+    try {
+      const data = await login(loginRequest);
+      if (!data.success) {
+        setErrors(["Invalid credentials, please try again"]);
+        return false;
+      } else {
         setErrors([]);
-        try {
-            const data = await register(request);
-            if (data.status === 409) {
-                setErrors(["User with this email already exists, please try a different one"]);
-            } else {
-                setErrors([]);
-                return true; 
-            }
-        } catch (err) {
-            setErrors(["An error occurred during registration"]);
-        } finally {
-            setLoading(false);
-        }
-        return false; 
-    };
+        setUser(data.body);
+        return { success: true, role: data.body.userRole };
+      }
+    } catch {
+      setErrors(["An error occurred during login"]);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    const contextValue = {
+  async function handleRegister(registerRequest) {
+    setLoading(true);
+    setErrors([]);
+    try {
+      const data = await register(registerRequest);
+      if (data.status === 409) {
+        setErrors(["User with this email already exists, please try a different one"]);
+      } else {
+        setErrors([]);
+        return true;
+      }
+    } catch {
+      setErrors(["An error occurred during registration"]);
+    } finally {
+      setLoading(false);
+    }
+    return false;
+  }
+
+  return (
+    <UserContext.Provider
+      value={{
         user,
-        handleLogin,
-        handleLogout,
-        handleRegister,
+        loading,
         errors,
         setErrors,
-        loading
-    };
-
-    return (
-        <UserContext.Provider value={contextValue}>
-            {children}
-        </UserContext.Provider>
-    );
+        handleLogin,
+        handleLogout,
+        handleRegister
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }

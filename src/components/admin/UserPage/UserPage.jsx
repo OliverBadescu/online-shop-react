@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,8 +14,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getAllUsers, updateUser, deleteUser } from "../../../services/api/userService";
 import { Link } from 'react-router-dom';
+import { UserContext } from "../../../services/state/UserContext";
 
 export default function UsersPageAdmin() {
+    const {user} = useContext(UserContext);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]); 
     const [page, setPage] = useState(0);
@@ -93,7 +95,7 @@ export default function UsersPageAdmin() {
 
     const handleEditFormSubmit = async () => {
         try {
-            await updateUser(selectedUser.id, editFormData);
+            await updateUser(selectedUser.id, editFormData, user.jwtToken);
             setOpenEditDialog(false);
             fetchUsers(); 
         } catch (err) {

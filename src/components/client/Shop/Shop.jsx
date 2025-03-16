@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { getAllProducts } from "../../../services/api/productsService";
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { UserContext } from "../../../services/state/UserContext";
 
 
 export default function Shop() {
@@ -14,6 +15,8 @@ export default function Shop() {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const {user} = useContext(UserContext);
+
     const fetchProducts = async () => {
         try {
             let data = await getAllProducts();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,8 +18,10 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { getAllOrders, updateOrder, deleteOrder } from "../../../services/api/orderService";
 import { Link } from 'react-router-dom';
+import { UserContext } from "../../../services/state/UserContext";
 
 export default function OrdersPageAdmin() {
+    const {user} = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]); 
     const [page, setPage] = useState(0);

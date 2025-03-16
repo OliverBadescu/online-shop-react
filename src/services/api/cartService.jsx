@@ -7,8 +7,9 @@ function api(path, method = 'GET', body = null) {
         'X-Requested-With': 'XMLHttpRequest',
       },
     };
-  
-    if (body) {
+
+
+    if (body != null) {
       options.body = JSON.stringify(body);
     }
   
@@ -34,7 +35,7 @@ function api(path, method = 'GET', body = null) {
       return {
         success: true,
         status: response.status,
-        body: data,
+        body: data
       };
     } catch (error) {
 
@@ -48,22 +49,22 @@ function api(path, method = 'GET', body = null) {
   }
 
 
-export async function getCartByUserId(userId) {
-    return request(`getCartByUserId/${userId}`, 'GET');
+export async function getCartByUserId() {
+    return request(`getCart`, 'GET');
 }
 
-export async function deleteProductFromCart(userId, productId) {
-    return request(`deleteProductFromCart/${userId}/product/${productId}`, 'DELETE');
+export async function deleteProductFromCart(productId) {
+    return request(`deleteProductFromCart/product/${productId}`, 'DELETE');
 }
 
-export async function addProductToCart(userId, product) {
-    return request(`addProductToCart/${userId}`, 'POST', product);
+export async function addProductToCart( product) {
+    return request(`addProductToCart`, 'POST', product);
 }
 
-export async function updateCartQuantity(userId, productId, quantityRequest) {
-    return request(`updateProductQuantity/${userId}/products/${productId}`, 'PUT', quantityRequest);
+export async function updateCartQuantity( productId, quantityRequest) {
+    return request(`updateProductQuantity/products/${productId}`, 'PUT', quantityRequest);
 }
 
-export async function clearUserCart(userId){
-    return request(`emptyUserCart/${userId}`, 'GET');
+export async function clearUserCart(){
+    return request(`emptyUserCart`, 'DELETE',null);
 }

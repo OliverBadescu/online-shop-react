@@ -25,7 +25,7 @@ export default function Account() {
     };
 
     const fetchOrders = async () => {
-        const response = await getAllCustomerOrders(contextUser.id);
+        const response = await getAllCustomerOrders();
         if (response.success) {
             setOrders(response.body.list);
         }

@@ -18,7 +18,7 @@ export default function CartProductCard({ product, onDelete, onQuantityUpdate })
             quantity: newQuantity
         }
 
-        const data = await updateCartQuantity(user.id, product.productId, request);
+        const data = await updateCartQuantity( product.productId, request);
 
         if (data.success) {
             setQuantity(newQuantity);
@@ -29,7 +29,7 @@ export default function CartProductCard({ product, onDelete, onQuantityUpdate })
     const handleDelete = async (event) => {
         event.preventDefault();
 
-        const data = await deleteProductFromCart(user.id, product.productId);
+        const data = await deleteProductFromCart( product.productId);
 
         if (data.success) {
             onDelete(product.productId); 

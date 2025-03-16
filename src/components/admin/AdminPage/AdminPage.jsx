@@ -16,6 +16,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 
 export default function AdminPage() {
+
+    const {user} = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);

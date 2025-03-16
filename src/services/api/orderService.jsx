@@ -7,7 +7,7 @@ function api(path, method = 'GET', body = null) {
         'X-Requested-With': 'XMLHttpRequest',
       },
     };
-  
+
     if (body) {
       options.body = JSON.stringify(body);
     }
@@ -15,7 +15,7 @@ function api(path, method = 'GET', body = null) {
     return fetch(url, options);
   }
   
-  async function request(path, method = 'GET', body = null) {
+  async function request(path, method = 'GET', body = null ) {
     try {
       const response = await api(path, method, body);
       const data = await response.json().catch(() => null);
@@ -29,7 +29,7 @@ function api(path, method = 'GET', body = null) {
       return {
         success: true,
         status: response.status,
-        body: data,
+        body: data
       };
     } catch (error) {
       return {
@@ -39,12 +39,12 @@ function api(path, method = 'GET', body = null) {
     }
   }
 
-  export function addOrder(userId, orderRequest){
-    return request(`${userId}`,'POST', orderRequest)
+  export function addOrder(orderRequest){
+    return request(`sendOrder`,'POST', orderRequest)
   }
   
-  export function getAllCustomerOrders(userId){
-    return request(`getCustomerOrders/${userId}`, 'GET');
+  export function getAllCustomerOrders(){
+    return request(`getCustomerOrders`, 'GET');
   }
 
   export function getRecentOrders(){
@@ -76,5 +76,5 @@ function api(path, method = 'GET', body = null) {
   }
 
   export function cancelOrder(id){
-    return request(`cancelOrder/${id}`, 'PUT');
+    return request(`cancelOrder/${id}`, 'PUT', null);
   }

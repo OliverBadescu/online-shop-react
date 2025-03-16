@@ -5,16 +5,35 @@ import dining from '../../../assets/imgs/dining.jpg';
 import bedroom from '../../../assets/imgs/bedroom.jpg';
 import setup from '../../../assets/imgs/setup.png';
 import { useNavigate, Link } from 'react-router-dom';
-import { ProductContext } from "../../../services/state/ProductsContext";
+import { UserContext } from "../../../services/state/UserContext";
+import { getAllProducts } from "../../../services/api/productsService";
+
 
 export default function Home() {
     const [offset, setOffset] = useState(0);
     const limit = 8;
 
     
-    
-    const { products } = useContext(ProductContext); 
 
+   const [products, setProducts] = useState([]);
+   const {user} = useContext(UserContext); 
+   
+   
+    const handleFetchProducts = async () => {
+   
+        try {
+            const response = await getAllProducts();
+            const allProducts = response.body.list;
+            setProducts(allProducts);
+    
+        } catch (err) {
+            console.error(err);
+        }
+   
+    }
+    useEffect(() => {
+        handleFetchProducts();
+    }, []);
 
 
     const handleShowMore = () => {

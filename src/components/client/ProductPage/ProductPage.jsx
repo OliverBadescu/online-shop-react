@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
 import { ProductCardContext } from '../../../services/state/productCardContext';
@@ -7,7 +7,7 @@ import test from '../../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../../services/api/cartService';
 import { UserContext } from '../../../services/state/UserContext';
 import { Alert } from 'antd';
-import { ProductContext } from '../../../services/state/ProductsContext';
+import { getAllProducts } from '../../../services/api/productsService';
 
 export default function ProductPage() {
     const { user } = useContext(UserContext);
@@ -18,7 +18,23 @@ export default function ProductPage() {
     const [offset, setOffset] = useState(0);
     const limit = 3;
      
-    const { products } = useContext(ProductContext); 
+    const [products, setProducts] = useState([]);
+       
+       
+        const handleFetchProducts = async () => {
+       
+            try {
+                const response = await getAllProducts(user.jwtToken);
+                const allProducts = response.body.list;
+                setProducts(allProducts);
+            } catch (err) {
+                console.error(err);
+            }
+       
+        }
+        useEffect(() => {
+            handleFetchProducts();
+        }, []);
 
 
     const handleInputChange = (event) => {
@@ -44,7 +60,8 @@ export default function ProductPage() {
             quantity: quantity 
         };
 
-        let data = await addProductToCart(user.id, cartRequest);
+        let data = await addProductToCart( cartRequest);
+
 
         if (data) {
             setError(false);

@@ -7,7 +7,7 @@ function api(path, method = 'GET', body = null) {
         'X-Requested-With': 'XMLHttpRequest',
       },
     };
-  
+
     if (body) {
       options.body = JSON.stringify(body);
     }
@@ -31,7 +31,7 @@ function api(path, method = 'GET', body = null) {
       return {
         success: true,
         status: response.status,
-        body: data,
+        body: data
       };
     } catch (error) {
       return {
