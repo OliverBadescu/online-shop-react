@@ -115,11 +115,12 @@ export default function UsersPageAdmin() {
     return (
         <>
             <div className="header-container">
-                <h1>Furniro</h1>
+                <h1>  <Link to={'/admin-page'}>Furniro</Link></h1>
                 <div className="navigation-container admin-container-nav">
                     <Link to={'/product-page-admin'}>Products</Link>
                     <Link to={'/order-page-admin'}>Orders</Link>
-                    <Link to={'/admin-page'}>Home</Link>
+                    <Link to={'/user-page-admin'}>User</Link>
+                    <Link to={'/category-page-admin'}>Category</Link>
                 </div>
             </div>
 

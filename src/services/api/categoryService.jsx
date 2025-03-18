@@ -45,3 +45,15 @@ function api(path, method = 'GET', body = null) {
   export function getAllCategories(){
     return request('getAll', 'GET');
   }
+
+  export function addCategory(data){
+    return request('addCategory', 'POST', data);
+  }
+
+  export function deleteCategory(id){
+    return request(`deleteCategory/${id}`, 'DELETE')
+  }
+
+  export function updateCategory(id, data){
+    return request(`updateCategory/${id}`, 'PUT', data);
+  }

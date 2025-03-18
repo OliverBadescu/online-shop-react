@@ -16,6 +16,7 @@ import AdminPage from './components/admin/AdminPage/AdminPage'
 import ProductPageAdmin from './components/admin/ProductPageAdmin/ProductPageAdmin';
 import UsersPageAdmin from './components/admin/UserPage/UserPage';
 import OrdersPageAdmin from './components/admin/OrdersPage/OrdersPage';
+import CategoriesPage from './components/admin/CategoryPage/CategoryPage';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
                   <Route path='/product-page-admin' element ={<ProductPageAdmin/>}/>
                   <Route path='/user-page-admin' element ={<UsersPageAdmin/>}/>
                   <Route path='/order-page-admin' element ={<OrdersPageAdmin/>}/>
+                  <Route path='/category-page-admin' element ={<CategoriesPage/>}/>
                   <Route path='/home' element ={ 
                       <ProtectedRoute>
                         <Home />

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { UserContext } from "../../../services/state/UserContext";
-
+import { getAllCategories } from "../../../services/api/categoryService";
 
 export default function Shop() {
     const [products, setProducts] = useState([]);
@@ -15,7 +15,8 @@ export default function Shop() {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const {user} = useContext(UserContext);
+    const [categories, setCategories] = useState([]);
+    const { user } = useContext(UserContext);
 
     const fetchProducts = async () => {
         try {
@@ -31,20 +32,30 @@ export default function Shop() {
         }
     };
 
+    const fetchCategories = async () => {
+        try {
+            let data = await getAllCategories();
+            if (data && Array.isArray(data.body.list)) {
+                setCategories(data.body.list);
+            } else {
+                console.error("Invalid API response: ", data);
+            }
+        } catch (err) {
+            console.error("Error fetching categories: ", err);
+        }
+    };
+
     const handleSearchChange = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
 
-        
         if (term.trim() === "") {
             setSuggestions([]);
-            
         } else {
             const filteredSuggestions = products.filter((product) =>
                 product.name.toLowerCase().includes(term.toLowerCase())
             );
             setSuggestions(filteredSuggestions);
-           
         }
         setShowSuggestions(true);
     };
@@ -61,7 +72,7 @@ export default function Shop() {
             );
             setFilteredProducts(filtered);
         } else {
-            setFilteredProducts(products); 
+            setFilteredProducts(products);
         }
         setShowSuggestions(false);
     };
@@ -72,25 +83,22 @@ export default function Shop() {
         }
     };
 
-    const handleItemSelectionToggle  = (event ,itemId, isSelected) =>{
-
-
-        if(isSelected){
+    const handleItemSelectionToggle = (event, itemId, isSelected) => {
+        if (isSelected) {
             setSelectedCategory(itemId);
 
-            if(itemId === "grid"){
+            if (itemId === "grid") {
                 setFilteredProducts(products);
-            }else{
+            } else {
                 const filtered = products.filter((product) => product.category.toLowerCase() === itemId.toLowerCase());
-                
                 setFilteredProducts(filtered);
             }
         }
-
-    }
+    };
 
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
 
     return (
@@ -125,14 +133,13 @@ export default function Shop() {
                 </div>
             </div>
             <div className="search-container-container">
-
                 <div className="tree-view">
                     <Box sx={{ minHeight: 150, minWidth: 250 }}>
-                        <SimpleTreeView onItemSelectionToggle={handleItemSelectionToggle }>
+                        <SimpleTreeView onItemSelectionToggle={handleItemSelectionToggle}>
                             <TreeItem itemId="grid" label="Categories">
-                                <TreeItem itemId="bedroom" label="Bedroom" />
-                                <TreeItem itemId="living" label="Living" />
-                                <TreeItem itemId="dining" label="Dining" />
+                                {categories.map((category) => (
+                                    <TreeItem key={category.id} itemId={category.name} label={category.name} />
+                                ))}
                             </TreeItem>
                         </SimpleTreeView>
                     </Box>
