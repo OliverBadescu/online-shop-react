@@ -1,7 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { getAllCategories, addCategory, updateCategory, deleteCategory } from "../../../services/api/categoryService";
+import {
+    getAllCategories,
+    addCategory,
+    addSubcategory,
+    updateCategory,
+    deleteCategory,
+} from "../../../services/api/categoryService";
 import { Link } from 'react-router-dom';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, InputLabel, FormControl, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import {
+    Button,
+    TextField,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControl,
+    Paper,
+    TableContainer,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+} from '@mui/material';
 
 export default function CategoriesPage() {
     const [categories, setCategories] = useState([]);
@@ -9,7 +33,7 @@ export default function CategoriesPage() {
     const [openDialog, setOpenDialog] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [categoryForm, setCategoryForm] = useState({ name: "" });
+    const [categoryForm, setCategoryForm] = useState({ name: "", parentId: null });
     const [searchTerm, setSearchTerm] = useState("");
 
     const fetchCategories = async () => {
@@ -29,8 +53,6 @@ export default function CategoriesPage() {
     const handleSearchChange = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
-
-        
         const filtered = categories.filter((category) =>
             category.name.toLowerCase().includes(term.toLowerCase())
         );
@@ -39,11 +61,21 @@ export default function CategoriesPage() {
 
     const handleAddCategory = async () => {
         try {
-            const response = await addCategory(categoryForm);
+            let response;
+            if (categoryForm.parentId) {
+            
+                response = await addSubcategory(categoryForm.parentId, { name: categoryForm.name });
+            } else {
+                
+                response = await addCategory({ name: categoryForm.name });
+            }
+
             if (response.success) {
-                fetchCategories(); 
+                const newCategory = response.body;
+                setCategories([...categories, newCategory]);
+                setFilteredCategories([...filteredCategories, newCategory]);
                 setOpenDialog(false);
-                setCategoryForm({ name: "" });
+                setCategoryForm({ name: "", parentId: null });
             }
         } catch (err) {
             console.error("Error adding category: ", err);
@@ -54,9 +86,14 @@ export default function CategoriesPage() {
         try {
             const response = await updateCategory(selectedCategory.id, categoryForm);
             if (response.success) {
-                fetchCategories(); 
+                const updatedCategory = response.body;
+                const updatedCategories = categories.map((category) =>
+                    category.id === selectedCategory.id ? updatedCategory : category
+                );
+                setCategories(updatedCategories);
+                setFilteredCategories(updatedCategories);
                 setOpenDialog(false);
-                setCategoryForm({ name: "" }); 
+                setCategoryForm({ name: "", parentId: null });
             }
         } catch (err) {
             console.error("Error updating category: ", err);
@@ -67,7 +104,9 @@ export default function CategoriesPage() {
         try {
             const response = await deleteCategory(categoryId);
             if (response.success) {
-                fetchCategories(); 
+                const updatedCategories = categories.filter((category) => category.id !== categoryId);
+                setCategories(updatedCategories);
+                setFilteredCategories(updatedCategories);
             }
         } catch (err) {
             console.error("Error deleting category: ", err);
@@ -78,17 +117,17 @@ export default function CategoriesPage() {
         if (category) {
             setEditMode(true);
             setSelectedCategory(category);
-            setCategoryForm({ name: category.name });
+            setCategoryForm({ name: category.name, parentId: category.parent ? category.parent.id : null });
         } else {
             setEditMode(false);
-            setCategoryForm({ name: "" });
+            setCategoryForm({ name: "", parentId: null });
         }
         setOpenDialog(true);
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
-        setCategoryForm({ name: "" });
+        setCategoryForm({ name: "", parentId: null });
     };
 
     useEffect(() => {
@@ -122,12 +161,13 @@ export default function CategoriesPage() {
                     <Button variant="contained" color="primary" onClick={() => handleOpenDialog()}>
                         Add Category
                     </Button>
-                    <Paper sx={{ width: "100%", overflow: "hidden", marginTop: "20px" }}>
+                    <Paper sx={{ width: "60%", overflow: "hidden", marginTop: "20px" }}>
                         <TableContainer sx={{ maxHeight: 440 }}>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Name</TableCell>
+                                        <TableCell>Parent</TableCell>
                                         <TableCell>Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -135,6 +175,7 @@ export default function CategoriesPage() {
                                     {filteredCategories.map((category) => (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={category.id}>
                                             <TableCell>{category.name}</TableCell>
+                                            <TableCell>{category.parent ? category.parent.name : "None"}</TableCell>
                                             <TableCell>
                                                 <Button
                                                     variant="contained"
@@ -171,8 +212,21 @@ export default function CategoriesPage() {
                         type="text"
                         fullWidth
                         value={categoryForm.name}
-                        onChange={(e) => setCategoryForm({ name: e.target.value })}
+                        onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
                     />
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel>Parent Category</InputLabel>
+                        <Select
+                            value={categoryForm.parentId || ""}
+                            onChange={(e) => setCategoryForm({ ...categoryForm, parentId: e.target.value })}
+                            label="Parent Category"
+                        >
+                            <MenuItem value={null}>None</MenuItem>
+                            {categories.map((category) => (
+                                <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog}>Cancel</Button>

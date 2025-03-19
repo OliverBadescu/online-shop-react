@@ -17,30 +17,31 @@ function api(path, method = 'GET', body = null) {
   
   async function request(path, method = 'GET', body = null) {
     try {
-      const response = await api(path, method, body);
-      const data = await response.json().catch(() => null);
-  
-      if (response.status!=200) {
+        const response = await api(path, method, body);
+        const data = await response.json().catch(() => null);
 
+        
+        if (response.status === 200 || response.status === 202 || response.status === 201) {
+            return {
+                success: true,
+                status: response.status,
+                body: data
+            };
+        }
+
+        
         const errorMessage = (data && data.message) || response.statusText || 'Request failed';
-
-        let error=  new Error(errorMessage);
-        error.status=response.status;
+        const error = new Error(errorMessage);
+        error.status = response.status;
         throw error;
-      }
-      return {
-        success: true,
-        status: response.status,
-        body: data
-      };
     } catch (error) {
-      return {
-        success: false,
-        message: error.message || 'Something went wrong',
-      };
+        return {
+            success: false,
+            status: error.status || 500,
+            message: error.message || 'Something went wrong',
+        };
     }
-  }
-
+}
 
   export function getAllCategories(){
     return request('getAll', 'GET');
@@ -56,4 +57,8 @@ function api(path, method = 'GET', body = null) {
 
   export function updateCategory(id, data){
     return request(`updateCategory/${id}`, 'PUT', data);
+  }
+
+  export function addSubcategory(id, data){
+    return request(`addSubcategory/ ${id}`, 'POST', data);
   }

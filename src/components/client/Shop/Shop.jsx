@@ -86,20 +86,54 @@ export default function Shop() {
     const handleItemSelectionToggle = (event, itemId, isSelected) => {
         if (isSelected) {
             setSelectedCategory(itemId);
-
+    
             if (itemId === "grid") {
                 setFilteredProducts(products);
             } else {
-                const filtered = products.filter((product) => product.category.toLowerCase() === itemId.toLowerCase());
+                // Find the category name from `categories` based on `itemId`
+                const selectedCategoryObj = categories.find(category => category.id.toString() === itemId);
+                if (!selectedCategoryObj) {
+                    console.error("Category not found for ID:", itemId);
+                    return;
+                }
+    
+                const selectedCategoryName = selectedCategoryObj.name.toLowerCase();
+                console.log("Filtering by Category Name:", selectedCategoryName);
+    
+                // Filter products based on category and name
+                const filtered = products.filter((product) => {
+                    const productCategory = product.category.toLowerCase();
+                    const productName = product.name.toLowerCase();
+    
+                    // Condition: Match category OR check if product name contains category name
+                    return productCategory === selectedCategoryName || productName.includes(selectedCategoryName);
+                });
+    
+                console.log("Filtered Products:", filtered);
                 setFilteredProducts(filtered);
             }
         }
     };
+    
+    
+    
+
+    const buildTree = (categories, parentId = null) => {
+        return categories
+            .filter((category) => (category.parent ? category.parent.id : null) === parentId)
+            .map((category) => (
+                <TreeItem key={category.id} itemId={category.id.toString()} label={category.name}>
+                    {buildTree(categories, category.id)}
+                </TreeItem>
+            ));
+    };
+    
 
     useEffect(() => {
         fetchProducts();
         fetchCategories();
     }, []);
+
 
     return (
         <>
@@ -137,9 +171,7 @@ export default function Shop() {
                     <Box sx={{ minHeight: 150, minWidth: 250 }}>
                         <SimpleTreeView onItemSelectionToggle={handleItemSelectionToggle}>
                             <TreeItem itemId="grid" label="Categories">
-                                {categories.map((category) => (
-                                    <TreeItem key={category.id} itemId={category.name} label={category.name} />
-                                ))}
+                                {categories.length > 0 ? buildTree(categories) : <p>Loading categories...</p>}
                             </TreeItem>
                         </SimpleTreeView>
                     </Box>
