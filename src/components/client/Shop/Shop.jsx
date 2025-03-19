@@ -90,7 +90,7 @@ export default function Shop() {
             if (itemId === "grid") {
                 setFilteredProducts(products);
             } else {
-                // Find the category name from `categories` based on `itemId`
+                
                 const selectedCategoryObj = categories.find(category => category.id.toString() === itemId);
                 if (!selectedCategoryObj) {
                     console.error("Category not found for ID:", itemId);
@@ -100,12 +100,12 @@ export default function Shop() {
                 const selectedCategoryName = selectedCategoryObj.name.toLowerCase();
                 console.log("Filtering by Category Name:", selectedCategoryName);
     
-                // Filter products based on category and name
+               
                 const filtered = products.filter((product) => {
                     const productCategory = product.category.toLowerCase();
                     const productName = product.name.toLowerCase();
     
-                    // Condition: Match category OR check if product name contains category name
+                    
                     return productCategory === selectedCategoryName || productName.includes(selectedCategoryName);
                 });
     
