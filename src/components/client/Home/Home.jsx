@@ -5,7 +5,7 @@ import dining from '../../../assets/imgs/dining.jpg';
 import bedroom from '../../../assets/imgs/bedroom.jpg';
 import setup from '../../../assets/imgs/setup.png';
 import { useNavigate, Link } from 'react-router-dom';
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 import { getAllProducts } from "../../../services/api/productsService";
 
 

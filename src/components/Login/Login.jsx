@@ -1,5 +1,5 @@
-import { useContext, useState, useEffect } from "react"; 
-import { UserContext } from "../../services/state/UserContext";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../services/state/userContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { Alert } from 'antd';
 import { useForm } from "react-hook-form";
@@ -16,18 +16,19 @@ export default function Login() {
     } = useForm();
 
 
+
     const onSubmit = async (data) => {
 
 
-        const req = await handleLogin(data); 
+        const req = await handleLogin(data);
 
         if (req.success) {
-            if(req.role=='ADMIN'){
+            if(req.role==='ADMIN'){
                 navigate('/admin-page');
             }else{
                 navigate('/home');
             }
-            
+
         }
     };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 import CheckoutProduct from "./CheckoutProduct";
 import { useNavigate, Link } from 'react-router-dom';
 import { addOrder } from "../../../services/api/orderService";

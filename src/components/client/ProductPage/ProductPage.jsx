@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
 import { ProductCardContext } from '../../../services/state/productCardContext';
 import { useContext } from 'react';
 import test from '../../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../../services/api/cartService';
-import { UserContext } from '../../../services/state/UserContext';
+import { UserContext } from '../../../services/state/userContext';
 import { Alert } from 'antd';
 import { getAllProducts } from '../../../services/api/productsService';
 

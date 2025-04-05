@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 import { getAllCustomerOrders } from "../../../services/api/orderService";
 import { getById, updateUser } from "../../../services/api/userService";
 import OrderCard from "../OrderCard/OrderCard";

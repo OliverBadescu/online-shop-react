@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 import { updateCartQuantity, deleteProductFromCart } from "../../../services/api/cartService";
 
 export default function CartProductCard({ product, onDelete, onQuantityUpdate }) {

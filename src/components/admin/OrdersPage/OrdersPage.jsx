@@ -18,7 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { getAllOrders, updateOrder, deleteOrder } from "../../../services/api/orderService";
 import { Link } from 'react-router-dom';
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 
 export default function OrdersPageAdmin() {
     const {user} = useContext(UserContext);

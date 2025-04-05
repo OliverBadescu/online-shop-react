@@ -60,6 +60,6 @@ export function deleteProduct(id){
   return request(`${id}`, 'DELETE');
 }
 
-export function addProduct(data, ){
-  return request('addProduct', 'POST');
+export function addProduct(data ){
+  return request('addProduct', 'POST', data);
 }

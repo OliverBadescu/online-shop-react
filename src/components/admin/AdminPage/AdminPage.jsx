@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 import { PieChart, LineChart } from '@mui/x-charts'; 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -12,7 +12,7 @@ import { getRecentOrders, totalOrders, totalRevenue, monthly } from "../../../se
 import { totalProducts } from "../../../services/api/productsService";
 import { totalUsers } from "../../../services/api/userService";
 import { mostSold } from "../../../services/api/productsService";
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export default function AdminPage() {

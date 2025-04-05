@@ -14,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getAllUsers, updateUser, deleteUser } from "../../../services/api/userService";
 import { Link } from 'react-router-dom';
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 
 export default function UsersPageAdmin() {
     const {user} = useContext(UserContext);

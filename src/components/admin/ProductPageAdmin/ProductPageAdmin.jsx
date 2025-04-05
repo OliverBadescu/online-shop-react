@@ -19,7 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import { getAllProducts, updateProduct, deleteProduct, addProduct } from "../../../services/api/productsService";
 import { getAllCategories } from "../../../services/api/categoryService";
 import { Link } from 'react-router-dom';
-import { UserContext } from "../../../services/state/UserContext";
+import { UserContext } from "../../../services/state/userContext";
 
 export default function ProductPageAdmin() {
 
@@ -274,8 +274,9 @@ export default function ProductPageAdmin() {
                 </div>
             </div>
 
-            <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
+            <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} className="dialog">
                 <DialogTitle>Edit Product</DialogTitle>
+                
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -287,6 +288,7 @@ export default function ProductPageAdmin() {
                         value={editFormData.name}
                         onChange={handleEditFormChange}
                     />
+                    
                     <TextField
                         margin="dense"
                         name="description"
@@ -345,23 +347,23 @@ export default function ProductPageAdmin() {
             </Dialog>
 
             
-            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)}>
+            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)} className="dialog">
                 <DialogTitle>Add Product</DialogTitle>
                 <DialogContent>
+                    <p>Product Name:</p>
                     <TextField
                         autoFocus
                         margin="dense"
                         name="name"
-                        label="Product Name"
                         type="text"
                         fullWidth
                         value={addFormData.name}
                         onChange={handleAddFormChange}
                     />
+                      <p>Product Description:</p>
                     <TextField
                         margin="dense"
                         name="description"
-                        label="Product Description"
                         type="text"
                         fullWidth
                         value={addFormData.description}
@@ -381,28 +383,30 @@ export default function ProductPageAdmin() {
                             ))}
                         </Select>
                     </FormControl>
+                    <p>Price:</p>
                     <TextField
                         margin="dense"
                         name="price"
-                        label="Price"
                         type="number"
                         fullWidth
                         value={addFormData.price}
                         onChange={handleAddFormChange}
                     />
+                      <p>Stock:</p>
                     <TextField
                         margin="dense"
                         name="stock"
-                        label="Stock"
+                        
                         type="number"
                         fullWidth
                         value={addFormData.stock}
                         onChange={handleAddFormChange}
                     />
+
+                    <p>Weight:</p>      
                     <TextField
                         margin="dense"
                         name="weight"
-                        label="Weight"
                         type="number"
                         fullWidth
                         value={addFormData.weight}

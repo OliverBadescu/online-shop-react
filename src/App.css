@@ -1244,6 +1244,22 @@ button:disabled {
   align-items: center;
 }
 
+.main-container-admin input[type=email],
+.main-container-admin input[type=password],
+.main-container-admin input[type=number],
+.main-container-admin input[type=text],
+.dialog  input[type=text],
+.dialog input[type= number]{
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+}
+
+.dialog{
+  line-height:30px;
+}
 
 
 .orders-table,
@@ -1269,7 +1285,9 @@ button:disabled {
   flex-direction: column;
 }
 
-.categories-container-admin, .main-container-admin{
+
+
+.categories-container-admin, .container-categories-admin-page{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1279,9 +1297,6 @@ button:disabled {
 .categories-container-admin{
   width:50%;
 }
-
-
-
 
 @media (max-width: 1400px) {
   .header-container {

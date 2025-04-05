@@ -14,12 +14,12 @@ export function UserProvider({ children }) {
     id: 0,
     jwtToken: "",
     phone: "",
-    role: ""
+    userRole: ""
   });
 
   const checkUser = () =>{
 
-    if(user.id == 0){
+    if(user.id === 0){
         navigate('/');
     }
 }
@@ -35,6 +35,7 @@ export function UserProvider({ children }) {
       if (user.jwtToken) {
         init.headers.Authorization = `Bearer ${user.jwtToken}`;
       }
+      // eslint-disable-next-line no-useless-catch
       try {
         const response = await originalFetch(input, init);
         if (response.status === 401) {
@@ -57,7 +58,7 @@ export function UserProvider({ children }) {
       id: 0,
       jwtToken: "",
       phone: "",
-      role: ""
+      userRole: ""
     });
     navigate("/");
   }
