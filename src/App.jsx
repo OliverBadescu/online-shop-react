@@ -1,7 +1,7 @@
 
 import './App.css'
 import Home from './components/client/Home/Home'
-import { userProvider } from '../src/services/state/userContext.jsx'
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/Route/ProtectedRoute'
 import Login from './components/Login/Login'
