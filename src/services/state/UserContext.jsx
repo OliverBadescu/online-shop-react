@@ -2,10 +2,10 @@ import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../api/userService";
 
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 export const userContext = createContext();
 
-export function userProvider({ children }) {
+export function UserProvider({ children }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
