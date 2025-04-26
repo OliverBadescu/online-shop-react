@@ -60,3 +60,15 @@ export function getById(userId){
 export async function updateUser(userId, updateRequest){
   return request(`update/${userId}`, 'PUT', updateRequest);
 }
+
+export function totalUsers(){
+  return request('totalUsers', 'GET');
+}
+
+export function getAllUsers(){
+  return request('getAllUsers', 'GET');
+}
+
+export function deleteUser(id){
+  return request(`delete/${id}`, 'DELETE');
+}
