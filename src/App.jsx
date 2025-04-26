@@ -3,7 +3,7 @@ import './App.css'
 import Home from './components/client/Home/Home'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import ProtectedRoute from './components/Route/ProtectedRoute'
+import ProtectedRoute from './components/Route/ProtectedRoute'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register';
 import Shop from './components/client/Shop/Shop';
@@ -22,11 +22,11 @@ function App() {
 
   return (
     <>
-    
-      
-      
+
+
+
       <Router>
-        <userProvider>    
+        <userProvider>
             <ProductCardProvider>
                 <Routes>
                   <Route path='/' element ={<Login/>}/>
@@ -42,12 +42,12 @@ function App() {
                   <Route path='/user-page-admin' element ={<UsersPageAdmin/>}/>
                   <Route path='/order-page-admin' element ={<OrdersPageAdmin/>}/>
                   <Route path='/category-page-admin' element ={<CategoriesPage/>}/>
-                  {/*<Route path='/home' element ={ */}
-                  {/*    <ProtectedRoute>*/}
-                  {/*      <Home />*/}
-                  {/*    </ProtectedRoute>*/}
-                  {/*  }*/}
-                  {/*  />*/}
+                  <Route path='/home' element ={
+                      <ProtectedRoute>
+                        <Home />
+                      </ProtectedRoute>
+                    }
+                    />
                 </Routes>
             </ProductCardProvider>
         </userProvider>
