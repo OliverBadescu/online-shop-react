@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { userContext } from '../../services/state/userContext';
+import {userContext} from '../../services/state/userContext.jsx';
 import { useContext } from 'react';
 
 
