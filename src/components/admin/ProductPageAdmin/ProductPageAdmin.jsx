@@ -19,12 +19,12 @@ import FormControl from '@mui/material/FormControl';
 import { getAllProducts, updateProduct, deleteProduct, addProduct } from "../../../services/api/productsService";
 import { getAllCategories } from "../../../services/api/categoryService";
 import { Link } from 'react-router-dom';
-import { UserContext } from "../../../services/state/userContext";
+import { userContext } from "../../../services/state/userContext";
 
 export default function ProductPageAdmin() {
 
 
-    const {user} = useState(UserContext);
+    const {user} = useState(userContext);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [openEditDialog, setOpenEditDialog] = useState(false);

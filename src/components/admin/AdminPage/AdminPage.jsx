@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../../services/state/userContext";
+import { userContext } from "../../../services/state/userContext";
 import { PieChart, LineChart } from '@mui/x-charts'; 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 
 export default function AdminPage() {
 
-    const {user} = useContext(UserContext);
+    const {user} = useContext(userContext);
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);

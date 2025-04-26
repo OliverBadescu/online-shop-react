@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { UserContext } from "../../services/state/userContext";
+import { userContext } from "../../services/state/userContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { Alert } from 'antd';
 import { useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
     const navigate = useNavigate();
-    const { handleLogin, errors:loginErrors, setErrors,  user } = useContext(UserContext); 
+    const { handleLogin, errors:loginErrors, setErrors,  user } = useContext(userContext); 
 
     const {
         register,

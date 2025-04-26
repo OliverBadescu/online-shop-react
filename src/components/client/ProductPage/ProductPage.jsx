@@ -5,12 +5,12 @@ import { ProductCardContext } from '../../../services/state/productCardContext';
 import { useContext } from 'react';
 import test from '../../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../../services/api/cartService';
-import { UserContext } from '../../../services/state/userContext';
+import { userContext } from '../../../services/state/userContext';
 import { Alert } from 'antd';
 import { getAllProducts } from '../../../services/api/productsService';
 
 export default function ProductPage() {
-    const { user } = useContext(UserContext);
+    const { user } = useContext(userContext);
     const { product } = useContext(ProductCardContext); 
     const [error, setError] = useState(true);
     const [quantity, setQuantity] = useState(1);

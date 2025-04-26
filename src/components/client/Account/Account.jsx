@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../../../services/state/userContext";
+import { userContext } from "../../../services/state/userContext";
 import { getAllCustomerOrders } from "../../../services/api/orderService";
 import { getById, updateUser } from "../../../services/api/userService";
 import OrderCard from "../OrderCard/OrderCard";
@@ -7,7 +7,7 @@ import { Alert } from "antd";
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Account() {
-    const { user: contextUser } = useContext(UserContext);
+    const { user: contextUser } = useContext(userContext);
     const [user, setUser] = useState(contextUser);
     const [orders, setOrders] = useState([]);
     const [activeSection, setActiveSection] = useState("account");
