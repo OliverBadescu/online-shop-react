@@ -30,6 +30,6 @@ jobs:
         run: |
           chmod +x ci/build-publish.sh
           USERNAME=oliver005 \
-          REPO=online_shop_api \
+          REPO=online-shop-react \
           TAG=${{ env.BUILD_NUMBER }} \
           ci/build-publish.sh ./
