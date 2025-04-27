@@ -25,6 +25,7 @@ export function UserProvider({ children }) {
     }
 }
 
+
     useEffect(() => {
         checkUser();
     }, []);
