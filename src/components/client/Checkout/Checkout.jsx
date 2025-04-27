@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from "react";
-import { userContext } from "../../../services/state/userContext";
+import { useEffect, useState } from "react";
 import CheckoutProduct from "./CheckoutProduct";
 import { useNavigate, Link } from 'react-router-dom';
 import { addOrder } from "../../../services/api/orderService";
@@ -7,7 +6,6 @@ import { clearUserCart, getCartByUserId } from "../../../services/api/cartServic
 
 export default function Checkout(){
 
-    const { user } = useContext(userContext);
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
     const [orderPlaced, setOrderPlaced] = useState(false);

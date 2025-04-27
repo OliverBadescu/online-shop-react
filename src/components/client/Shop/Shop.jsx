@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { userContext } from "../../../services/state/userContext";
+import { usersContext } from "../../../services/state/userContext";
 import { getAllCategories } from "../../../services/api/categoryService";
 
 export default function Shop() {
@@ -16,7 +16,7 @@ export default function Shop() {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [categories, setCategories] = useState([]);
-    const { user } = useContext(userContext);
+    const { user } = useContext(usersContext);
 
     const fetchProducts = async () => {
         try {

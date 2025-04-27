@@ -14,10 +14,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getAllUsers, updateUser, deleteUser } from "../../../services/api/userService";
 import { Link } from 'react-router-dom';
-import { userContext } from "../../../services/state/userContext";
+import { usersContext } from "../../../services/state/userContext";
 
 export default function UsersPageAdmin() {
-    const {user} = useContext(userContext);
+    const {user} = useContext(usersContext);
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]); 
     const [page, setPage] = useState(0);

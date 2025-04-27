@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login, register } from "../api/userService";
 
  
-export const userContext = createContext();
+export const usersContext = createContext();
 
 export function UserProvider({ children }) {
   const navigate = useNavigate();

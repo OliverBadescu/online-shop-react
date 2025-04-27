@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { userContext } from "../../services/state/userContext";
+import { usersContext } from "../../services/state/userContext";
 import { useNavigate, Link } from 'react-router-dom';
 import { Alert } from 'antd';
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ export default function Register() {
     } = useForm();
 
     const navigate = useNavigate();
-    const { handleRegister, errors: registerErrors, setErrors } = useContext(userContext);
+    const { handleRegister, errors: registerErrors, setErrors } = useContext(usersContext);
     const [registered, setRegistered] = useState(false);
 
     const onSubmit = async (data) => {

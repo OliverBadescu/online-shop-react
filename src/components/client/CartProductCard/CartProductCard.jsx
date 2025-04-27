@@ -1,9 +1,7 @@
-import { useContext, useState } from "react";
-import { userContext } from "../../../services/state/userContext";
+import {  useState } from "react";
 import { updateCartQuantity, deleteProductFromCart } from "../../../services/api/cartService";
 
 export default function CartProductCard({ product, onDelete, onQuantityUpdate }) {
-    const { user } = useContext(userContext);
     const [quantity, setQuantity] = useState(product.quantity);
 
     const subtotal = (product.price * quantity).toFixed(2);
