@@ -5,7 +5,7 @@ import { ProductCardContext } from '../../../services/state/productCardContext';
 import { useContext } from 'react';
 import test from '../../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../../services/api/cartService';
-import { usersContext } from '../../../services/state/userContext';
+import { usersContext } from '../../../services/state/userState';
 import { Alert } from 'antd';
 import { getAllProducts } from '../../../services/api/productsService';
 

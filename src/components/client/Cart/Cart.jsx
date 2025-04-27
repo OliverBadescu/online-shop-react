@@ -1,12 +1,10 @@
-import { useContext, useState, useEffect } from "react";
-import { usersContext } from "../../../services/state/userContext";
+import {  useState, useEffect } from "react";
 import { getCartByUserId } from "../../../services/api/cartService";
 import CartProductCard from "../CartProductCard/CartProductCard";
 import { useNavigate, Link } from 'react-router-dom';
 
 
 export default function Cart() {
-    const { user } = useContext(usersContext);
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
 

@@ -19,7 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import { getAllProducts, updateProduct, deleteProduct, addProduct } from "../../../services/api/productsService";
 import { getAllCategories } from "../../../services/api/categoryService";
 import { Link } from 'react-router-dom';
-import { usersContext } from "../../../services/state/userContext";
+import { usersContext } from "../../../services/state/userState";
 
 export default function ProductPageAdmin() {
 

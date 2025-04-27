@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { usersContext } from "../../../services/state/userContext";
+import { usersContext } from "../../../services/state/userState";
 import { getAllCategories } from "../../../services/api/categoryService";
 
 export default function Shop() {
