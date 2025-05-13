@@ -9,7 +9,7 @@ import Register from './components/Register/Register';
 import Shop from './components/client/Shop/Shop';
 import Checkout from './components/client/Checkout/Checkout'
 import ProductPage from './components/client/ProductPage/ProductPage'
-import ProductCardProvider from './services/state/productCardContext'
+import ProductCardProvider from './services/state/productCardState'
 import Cart from './components/client/Cart/Cart'
 import Account from './components/client/Account/Account'
 import AdminPage from './components/admin/AdminPage/AdminPage'
@@ -17,6 +17,7 @@ import ProductPageAdmin from './components/admin/ProductPageAdmin/ProductPageAdm
 import UsersPageAdmin from './components/admin/UserPage/UserPage';
 import OrdersPageAdmin from './components/admin/OrdersPage/OrdersPage';
 import CategoriesPage from './components/admin/CategoryPage/CategoryPage';
+import { UserProvider } from './services/state/userState';
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
 
 
       <Router>
-        <userProvider>
+        <UserProvider>
             <ProductCardProvider>
                 <Routes>
                   <Route path='/' element ={<Login/>}/>
@@ -50,7 +51,7 @@ function App() {
                     />
                 </Routes>
             </ProductCardProvider>
-        </userProvider>
+        </UserProvider>
       </Router>
           
     </>

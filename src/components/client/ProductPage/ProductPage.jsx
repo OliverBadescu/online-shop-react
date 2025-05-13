@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
-import { ProductCardContext } from '../../../services/state/productCardContext';
+import { ProductCardContext } from '../../../services/state/productCardState';
 import { useContext } from 'react';
 import test from '../../../assets/imgs/test.jpg';
 import { addProductToCart } from '../../../services/api/cartService';

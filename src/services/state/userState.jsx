@@ -106,7 +106,7 @@ export function UserProvider({ children }) {
   }
 
   return (
-    <UserContext.Provider
+    <usersContext.Provider
       value={{
         user,
         loading,
@@ -118,6 +118,6 @@ export function UserProvider({ children }) {
       }}
     >
       {children}
-    </UserContext.Provider>
+    </usersContext.Provider>
   );
 }

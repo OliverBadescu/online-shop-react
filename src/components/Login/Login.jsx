@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
     const navigate = useNavigate();
-    const { handleLogin, errors:loginErrors, setErrors,  user } = useContext(usersContext); 
+    const { handleLogin, errors:loginErrors, setErrors } = useContext(usersContext); 
 
     const {
         register,
