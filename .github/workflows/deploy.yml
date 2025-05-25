@@ -2,7 +2,7 @@ name: CD - Deploy Online Shop
 
 on:
   push:
-    branches: [ '**' ]
+    branches: [ master, develop, feature/** ]
   workflow_dispatch:
 
 permissions:
@@ -10,25 +10,58 @@ permissions:
   packages: write
 
 jobs:
-  deploy:
+  build-client:
     runs-on: ubuntu-latest
-    steps:
-      - name: Set build number
-        id: build-number
-        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_ENV
+    env:
+      ENVIRONMENT: ${{ github.ref == 'refs/heads/master' && 'prod' || 'dev' }}
 
-      - name: Checkout code
-        uses: actions/checkout@v2
+    outputs:
+      tag: ${{ steps.build.outputs.tag }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Docker Build and push
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      - id: build
+        name: Build & push multi-arch image
         run: |
-          chmod +x ci/build.sh
-          ci/build.sh prod
+          chmod +x ci/build-publish.sh
+          ./ci/build-publish.sh "$ENVIRONMENT"  
+  
+  deploy-ec2:
+    needs: build-client
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update tag & restart client
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+         COMPOSE_PROJECT_NAME: onlineshopapp
+        with:
+          host:     ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key:      ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            ENV_FILE=/home/ubuntu/.env
+            NEW_TAG="${{ needs.build-client.outputs.tag }}"
+
+            echo "🔄  Set CLIENT_TAG=$NEW_TAG"
+            if grep -q '^CLIENT_TAG=' "$ENV_FILE"; then
+              sudo sed -i "s/^CLIENT_TAG=.*/CLIENT_TAG=$NEW_TAG/" "$ENV_FILE"
+            else
+              echo "CLIENT_TAG=$NEW_TAG" | sudo tee -a "$ENV_FILE"
+            fi
+
+            echo "🚢  Pull & restart client"
+            # dacă fișierul tău se numește docker-compose.yml, schimbă extensia aici
+            sudo docker compose -f /home/ubuntu/docker-compose.yaml pull client
+            sudo docker compose -f /home/ubuntu/docker-compose.yaml up -d --no-deps client
